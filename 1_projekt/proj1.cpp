@@ -4,10 +4,10 @@
 using namespace std;
 #include <math.h> 
 
-int *tab;
 int n;
 
-void randomize_tab(int tab[], int first_to_randomize = 0) {
+template <class T>
+void randomize_tab(T tab[], int first_to_randomize = 0) {
 	tab[0] = rand() % (n * 5);
 	for(int i = 1; i < first_to_randomize; i++) {
 		tab[i] = tab[i - 1] + (rand() % n);
@@ -17,13 +17,15 @@ void randomize_tab(int tab[], int first_to_randomize = 0) {
 	}
 }
 
-void show_tab(int tab[], int first_elem = 0, int last_elem = (n - 1)) {
+template <class T>
+void show_tab(T tab[], int first_elem = 0, int last_elem = (n - 1)) {
 	for(int i = first_elem; i <= last_elem; i++) {
 		cout << tab[i] << " ";
 	}
 }
 
-void swap_elements(int tab[], int first_elem, int second_elem) {
+template <class T>
+void swap_elements(T tab[], int first_elem, int second_elem) {
 	int temp = tab[second_elem];
 	tab[second_elem] = tab[first_elem];
 	tab[first_elem] = temp;
@@ -35,11 +37,12 @@ ostream& operator << (ostream &out, int tab[]) {
 }
 
 
-
+template <class T>
 class MergeSort {
-	int *pom;
+	T *pom;
+	T *tab;
 
-	void merge(int tab[], int left, int mid, int right) {
+	void merge(T tab[], int left, int mid, int right) {
 		int tab_index = left;
 		int l = left, m = mid, r = right;
 
@@ -80,7 +83,7 @@ class MergeSort {
 
 	}
 
-	void split(int tab[], int left, int right) {
+	void split(T tab[], int left, int right) {
 		if(right <= left) 
 			return;
 
@@ -92,34 +95,41 @@ class MergeSort {
 	}
 
 public:
-	MergeSort(int num_elements, int first_element_to_randomize = 0) {
+	MergeSort(int num_elements, int first_element_to_randomize = 0, bool debug = false) {
 		
 		n = num_elements;
-		tab = new int[n];
-		pom = new int[n];
+		tab = new T[n];
+		pom = new T[n];
 
 		randomize_tab(tab, first_element_to_randomize);
-		//cout << "tabela: " << tab << endl;
+		if(debug)
+			cout << "PRZED: " << tab << endl;
 		split(tab, 0, n - 1);
-		//cout << "tabela: " << tab << endl;
+		if(debug)
+			cout << "PO: " << tab << endl;
 	}
 
-	MergeSort(int num_elements, int tab[]) {
+	MergeSort(int num_elements, T tab[], bool debug = false) {
 		n = num_elements;
 		pom = new int[n];
 
+		if(debug)
+			cout << "PRZED: " << tab << endl;
 		split(tab, 0, n - 1);
-	}
+		if(debug)
+			cout << "PO: " << tab << endl;	}
 
 	~MergeSort() {
 		delete []pom;
 	}
 };
 
+template <class T>
 class Quicksort {
-	int *pom;
+	T *pom;
+	T *tab;
 
-	int get_pivot(int tab[], int left, int mid, int right) {
+	int get_pivot(T tab[], int left, int mid, int right) {
 
 		int pivot = tab[mid];
 		int tab_index = left;
@@ -137,7 +147,7 @@ class Quicksort {
 		return tab_index;
 	}
 
-	int get_pivot_2(int tab[], int left, int mid, int right) {
+	int get_pivot_2(T tab[], int left, int mid, int right) {
 		int pivot = tab[mid];
 		int tab_index = left;
 
@@ -158,7 +168,7 @@ class Quicksort {
 		}
 	}
 
-	void split(int tab[], int left, int right) {
+	void split(T tab[], int left, int right) {
 		if(right <= left) 
 			return;
 
@@ -197,14 +207,16 @@ public:
 	}
 };
 
+template <class T>
 class Heapsort {
 	int heap_size; 
+	T *tab;
 
 	inline int get_parent(int i) { return int(i/2); }
 	inline int get_right(int i) { return 2 * (i + 1); }
 	inline int get_left(int i) { return 2 * (i + 1) - 1; }
 
-	void max_heapify(int tab[], int i) {
+	void max_heapify(T tab[], int i) {
 		int left = get_left(i);
 		int right = get_right(i);
 		int largest = i;
@@ -222,14 +234,14 @@ class Heapsort {
 		}
 	} 
 
-	void build_max_heap(int tab[]) {
+	void build_max_heap(T tab[]) {
 		heap_size = n;
 		for(int i = int(heap_size / 2); i >= 0; i--) {
 			max_heapify(tab, i);
 		}
 	}
 
-	void sort(int tab[]) {
+	void sort(T tab[]) {
 
 		build_max_heap(tab);
 		for(int i = n - 1; i >= 0; i--) {
@@ -242,31 +254,38 @@ class Heapsort {
 	}
 
 public:
-	Heapsort(int num_elements, int first_element_to_randomize = 0) {
+	Heapsort(int num_elements, int first_element_to_randomize = 0, bool debug = false) {
 		n = num_elements;
-		tab = new int[n];
+		tab = new T[n];
 
 		randomize_tab(tab, first_element_to_randomize);
 
-		//cout << "PRZED: " << tab << endl;
+		if(debug)
+			cout << "PRZED: " << tab << endl;
 		sort(tab);
-		//cout << "PO: " << tab << endl;
+		if(debug)
+			cout << "PO: " << tab << endl;
 	}
 
-	Heapsort(int num_elements, int tab[]) {
+	Heapsort(int num_elements, T tab[], bool debug = false) {
 		n = num_elements;
 
-		//cout << "PRZED: " << tab << endl;
+		if(debug)
+			cout << "PRZED: " << tab << endl;
 		sort(tab);
-		//cout << "PO: " << tab << endl;
+		if(debug)
+			cout << "PO: " << tab << endl;
 	}
 };
 
 
+template <class T>
 class Introsort {
 	int maxdepth;
+	T *tab;
+	T *pom;
 	
-	int get_pivot(int tab[], int left, int mid, int right) {
+	int get_pivot(T tab[], int left, int mid, int right) {
 		int pivot = tab[mid];
 		int tab_index = left;
 
@@ -287,18 +306,19 @@ class Introsort {
 		}
 	}
 
-	void introsort(int tab[], int left, int right, int maxdepth) {
+	void introsort(T tab[], int left, int right, int maxdepth) {
 		int num_elements = right - left;
 		int mid = (left + right) / 2;
 		int pivot = get_pivot(tab, left, mid, right);
 		if(num_elements < 1)
 			return;
 		else if(maxdepth == 0) {
-			int *pom = new int[num_elements + 1];
+			pom = new T[num_elements + 1];
+
 			for(int i = left; i <= right; i++) {
 				pom[i - left] = tab[i];
 			}
-			Heapsort sort(num_elements, pom);
+			Heapsort<T> sort(num_elements, pom);
 			for(int i = left; i <= right; i++) {
 				tab[i] = pom[i - left];
 			}
@@ -319,24 +339,26 @@ class Introsort {
 public:
 	Introsort(int num_elements, int first_element_to_randomize = 0, bool debug = false) {
 		n = num_elements;
-		tab = new int[n];
+		tab = new T[n];
 		randomize_tab(tab, first_element_to_randomize);
 		if(debug)
 			cout << "PRZED: " << tab << endl;
 
 		sort(tab);
+		n = num_elements;
 
 		if(debug)
 			cout << "PO: " << tab << endl;
 	}
 
-	Introsort(int num_elements, int tab[], bool debug = false) {
+	Introsort(int num_elements, T tab[], bool debug = false) {
 		n = num_elements;
 
 		if(debug)
 			cout << "PRZED: " << tab << endl;
 
 		sort(tab);
+		n = num_elements;
 
 		if(debug)
 			cout << "PO: " << tab << endl;
@@ -346,90 +368,77 @@ public:
 class Tester {
 	int tests_num[5] = {10000, 50000, 100000, 500000, 1000000};
 	float tests_first_elem_to_random[7] = {0, 0.25, 0.50, 0.75, 0.95, 0.99, 0.997};
-
+	int number_of_tests = 100;
+	double duration = 0;
+	double total_duration_per_test = 0;
 public:
 
-	void Test_merge_sort() {
+	template <class Type>
+	void test_sort(int sort_method) {
 		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
 			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
-				clock_t start = clock();
+				total_duration_per_test = 0;
+				for(int k = 0; k < number_of_tests; k++) {
+					clock_t start = clock();
 
-				MergeSort merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
+					switch(sort_method) {
+						case 0:
+						{
+							MergeSort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}	break;
+						case 1:
+						{
+							Quicksort<Type> quick(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}	break;
+						case 2:
+						{
+							Introsort<Type> intro(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}
+							break;
+						default:
+							break;
+					}
+					duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+					total_duration_per_test += duration;
+				}
+				duration = total_duration_per_test / number_of_tests;
+				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << duration << endl;					
 			}	
 
-			tab = new int[tests_num[i]];
+			Type tab[tests_num[i]];
 			for (int j = 1; j <= tests_num[i]; j++) {
 				tab[tests_num[i] - j] = j;
 			}
-			clock_t start = clock();
-			MergeSort merge(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
+			total_duration_per_test = 0;
 
-		}
-	}
-
-	void Test_quicksort() {
-		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
-			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
+			for(int k = 0; k < number_of_tests; k++) {
 				clock_t start = clock();
 
-				Quicksort sort(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-			}	
-
-			tab = new int[tests_num[i]];
-			for (int j = 1; j <= tests_num[i]; j++) {
-				tab[tests_num[i] - j] = j;
+				switch(sort_method) {
+					case 0:
+					{
+						MergeSort<Type> merge(tests_num[i], tab);
+					}
+						break;
+					case 1:
+					{
+						Quicksort<Type> quick(tests_num[i], tab);
+					}
+						break;
+					case 2:
+					{
+						Introsort<Type> intro(tests_num[i], tab);
+					}
+						break;
+					default:
+						break;
+				}
+				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+				total_duration_per_test += duration;
 			}
-			clock_t start = clock();
-			Quicksort sort(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-
-		}
-	}
-
-	void Test_heapsort() {
-		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
-			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
-				clock_t start = clock();
-
-				Heapsort sort(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-			}	
-
-			tab = new int[tests_num[i]];
-			for (int j = 1; j <= tests_num[i]; j++) {
-				tab[tests_num[i] - j] = j;
-			}
-			clock_t start = clock();
-			Heapsort sort(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-
-		}
-	}
-
-	void Test_introsort() {
-		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
-			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
-				clock_t start = clock();
-
-				Introsort sort(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-			}	
-
-			tab = new int[tests_num[i]];
-			for (int j = 1; j <= tests_num[i]; j++) {
-				tab[tests_num[i] - j] = j;
-			}
-			clock_t start = clock();
-			Introsort sort(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-
+			duration = total_duration_per_test / number_of_tests;
+			cout << "Duration for " << tests_num[i] << " with reversed order: " << total_duration_per_test << endl;
+		
 		}
 	}
 };
@@ -440,20 +449,16 @@ public:
 int main() {
 	srand(time(NULL));
 	Tester test;
-	//Quicksort sort(10, 0, true);
-
-	//Introsort(10, 0, true);
 
 	bool test_sort = true;
 	if(test_sort) {
+		cout << endl << endl << " MergeSort " << endl << endl;
+		test.test_sort<int>(0);
+		cout << endl << endl << " Quicksort " << endl << endl;
+		test.test_sort<int>(1);
 		cout << endl << endl << " Introsort " << endl << endl;
-		test.Test_introsort();
-		cout << endl << endl << " Heapsort " << endl << endl;
-		test.Test_heapsort();
-		cout << endl << endl << " QUICKSORT " << endl << endl;
-		test.Test_quicksort();
-		cout << endl << endl << " MERGESORT " << endl << endl;
-		test.Test_merge_sort();
+		test.test_sort<int>(2);
+		
 	}
 	return 0;
 }
