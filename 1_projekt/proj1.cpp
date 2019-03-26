@@ -368,69 +368,77 @@ public:
 class Tester {
 	int tests_num[5] = {10000, 50000, 100000, 500000, 1000000};
 	float tests_first_elem_to_random[7] = {0, 0.25, 0.50, 0.75, 0.95, 0.99, 0.997};
-
+	int number_of_tests = 100;
+	double duration = 0;
+	double total_duration_per_test = 0;
 public:
 
 	template <class Type>
-	void Test_mergesort() {
+	void test_sort(int sort_method) {
 		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
 			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
-				clock_t start = clock();
+				total_duration_per_test = 0;
+				for(int k = 0; k < number_of_tests; k++) {
+					clock_t start = clock();
 
-				MergeSort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
+					switch(sort_method) {
+						case 0:
+						{
+							MergeSort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}	break;
+						case 1:
+						{
+							Quicksort<Type> quick(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}	break;
+						case 2:
+						{
+							Introsort<Type> intro(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+						}
+							break;
+						default:
+							break;
+					}
+					duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+					total_duration_per_test += duration;
+				}
+				duration = total_duration_per_test / number_of_tests;
+				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << duration << endl;					
 			}	
 
 			Type tab[tests_num[i]];
 			for (int j = 1; j <= tests_num[i]; j++) {
 				tab[tests_num[i] - j] = j;
 			}
-			clock_t start = clock();
-			MergeSort<Type> merge(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-		}
-	}
+			total_duration_per_test = 0;
 
-	template <class Type>
-	void Test_quicksort() {
-		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
-			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
+			for(int k = 0; k < number_of_tests; k++) {
 				clock_t start = clock();
 
-				Quicksort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-			}	
-
-			Type tab[tests_num[i]];
-			for (int j = 1; j <= tests_num[i]; j++) {
-				tab[tests_num[i] - j] = j;
+				switch(sort_method) {
+					case 0:
+					{
+						MergeSort<Type> merge(tests_num[i], tab);
+					}
+						break;
+					case 1:
+					{
+						Quicksort<Type> quick(tests_num[i], tab);
+					}
+						break;
+					case 2:
+					{
+						Introsort<Type> intro(tests_num[i], tab);
+					}
+						break;
+					default:
+						break;
+				}
+				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+				total_duration_per_test += duration;
 			}
-			clock_t start = clock();
-			Quicksort<Type> merge(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-		}
-	}
-
-	template <class Type>
-	void Test_introsort() {
-		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
-			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
-				clock_t start = clock();
-
-				Introsort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
-			}	
-
-			Type tab[tests_num[i]];
-			for (int j = 1; j <= tests_num[i]; j++) {
-				tab[tests_num[i] - j] = j;
-			}
-			clock_t start = clock();
-			Introsort<Type> merge(tests_num[i], tab);
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << ((clock() - start) / (double) CLOCKS_PER_SEC) << endl;
+			duration = total_duration_per_test / number_of_tests;
+			cout << "Duration for " << tests_num[i] << " with reversed order: " << total_duration_per_test << endl;
+		
 		}
 	}
 };
@@ -441,18 +449,15 @@ public:
 int main() {
 	srand(time(NULL));
 	Tester test;
-	//Quicksort<int> sort(10, 0, true);
-
-	//Introsort<int> sort(15, 0, true);
 
 	bool test_sort = true;
 	if(test_sort) {
 		cout << endl << endl << " MergeSort " << endl << endl;
-		test.Test_mergesort<int>();
+		test.test_sort<int>(0);
 		cout << endl << endl << " Quicksort " << endl << endl;
-		test.Test_quicksort<int>();
+		test.test_sort<int>(1);
 		cout << endl << endl << " Introsort " << endl << endl;
-		test.Test_introsort<int>();
+		test.test_sort<int>(2);
 		
 	}
 	return 0;
