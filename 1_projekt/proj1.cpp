@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-using namespace std;
-#include <math.h> 
+#include <math.h>
+
+using namespace std; 
 
 int n;
 
@@ -34,6 +35,15 @@ void swap_elements(T tab[], int first_elem, int second_elem) {
 ostream& operator << (ostream &out, int tab[]) {
 	show_tab(tab);
 	return out;
+}
+
+template <class T>
+bool is_array_sorted(T tab[]) {
+	for(int i = 1; i < n; i++) {
+		if(tab[i-1] > tab[i])
+			return false;
+	}
+	return true;
 }
 
 
@@ -105,8 +115,11 @@ public:
 		if(debug)
 			cout << "PRZED: " << tab << endl;
 		split(tab, 0, n - 1);
-		if(debug)
+		if(debug) 
 			cout << "PO: " << tab << endl;
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
+
 	}
 
 	MergeSort(int num_elements, T tab[], bool debug = false) {
@@ -117,7 +130,10 @@ public:
 			cout << "PRZED: " << tab << endl;
 		split(tab, 0, n - 1);
 		if(debug)
-			cout << "PO: " << tab << endl;	}
+			cout << "PO: " << tab << endl;	
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
+	}
 
 	~MergeSort() {
 		delete []pom;
@@ -191,6 +207,8 @@ public:
 		split(tab, 0, n-1);
 		if(debug)
 			cout << "PO: " << tab << endl;
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
 	}
 
 	Quicksort(int num_elements, int tab[]) {
@@ -199,6 +217,8 @@ public:
 
 		//cout << "PRZED: " << tab << endl;
 		split(tab, 0, n-1);
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
 		//cout << "PO: " << tab << endl;
 	}
 
@@ -212,13 +232,9 @@ class Heapsort {
 	int heap_size; 
 	T *tab;
 
-	inline int get_parent(int i) { return int(i/2); }
-	inline int get_right(int i) { return 2 * (i + 1); }
-	inline int get_left(int i) { return 2 * (i + 1) - 1; }
-
-	void max_heapify(T tab[], int i) {
-		int left = get_left(i);
-		int right = get_right(i);
+	void heapify(T tab[], int i) {
+		int left = 2 * (i + 1) - 1;
+		int right = 2 * (i + 1);
 		int largest = i;
 		
 		if (right < heap_size && tab[right] > tab[i]) {
@@ -230,27 +246,26 @@ class Heapsort {
 
 		if(largest != i) {
 			swap_elements(tab, i, largest);
-			max_heapify(tab, largest);
+			heapify(tab, largest);
 		}
 	} 
 
 	void build_max_heap(T tab[]) {
 		heap_size = n;
-		for(int i = int(heap_size / 2); i >= 0; i--) {
-			max_heapify(tab, i);
-		}
+		for (int i = int(n/2); i >= 0; i--)
+			heapify(tab, i);
 	}
 
 	void sort(T tab[]) {
 
 		build_max_heap(tab);
-		for(int i = n - 1; i >= 0; i--) {
+		for (int i = n-1; i > 0; i--)
+		{
 			swap_elements(tab, i, 0);
 			heap_size--;
-
-			max_heapify(tab, 0);
-
+			heapify(tab,0);
 		}
+
 	}
 
 public:
@@ -265,6 +280,9 @@ public:
 		sort(tab);
 		if(debug)
 			cout << "PO: " << tab << endl;
+
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
 	}
 
 	Heapsort(int num_elements, T tab[], bool debug = false) {
@@ -275,6 +293,9 @@ public:
 		sort(tab);
 		if(debug)
 			cout << "PO: " << tab << endl;
+
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
 	}
 };
 
@@ -349,6 +370,10 @@ public:
 
 		if(debug)
 			cout << "PO: " << tab << endl;
+
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
+
 	}
 
 	Introsort(int num_elements, T tab[], bool debug = false) {
@@ -362,6 +387,9 @@ public:
 
 		if(debug)
 			cout << "PO: " << tab << endl;
+
+		if(!is_array_sorted<T>(tab))
+			cout << "Array is not sorted" << endl;
 	}
 };
 
@@ -385,21 +413,30 @@ public:
 						case 0:
 						{
 							MergeSort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-						}	break;
+							//delete merge;
+							break;
+						}	
 						case 1:
 						{
 							Quicksort<Type> quick(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-						}	break;
+							break;
+						}	
 						case 2:
 						{
 							Introsort<Type> intro(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-						}
 							break;
+						}
+						case 3:
+						{
+							Heapsort<Type> heap(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							break;
+						}
 						default:
 							break;
 					}
 					duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
 					total_duration_per_test += duration;
+					
 				}
 				duration = total_duration_per_test / number_of_tests;
 				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << duration << endl;					
@@ -411,34 +448,37 @@ public:
 			}
 			total_duration_per_test = 0;
 
-			for(int k = 0; k < number_of_tests; k++) {
-				clock_t start = clock();
+			clock_t start = clock();
 
-				switch(sort_method) {
-					case 0:
-					{
-						MergeSort<Type> merge(tests_num[i], tab);
-					}
-						break;
-					case 1:
-					{
-						Quicksort<Type> quick(tests_num[i], tab);
-					}
-						break;
-					case 2:
-					{
-						Introsort<Type> intro(tests_num[i], tab);
-					}
-						break;
-					default:
-						break;
+			switch(sort_method) {
+				case 0:
+				{
+					MergeSort<Type> merge(tests_num[i], tab);
+					break;
 				}
-				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
-				total_duration_per_test += duration;
+				case 1:
+				{
+					Quicksort<Type> quick(tests_num[i], tab);
+					break;
+				}
+				case 2:
+				{
+					Introsort<Type> intro(tests_num[i], tab);
+					break;
+				}
+				case 3:
+				{
+					Heapsort<Type> heap(tests_num[i], tab);
+					break;
+				}
+				default:
+					break;
 			}
-			duration = total_duration_per_test / number_of_tests;
+			if(!is_array_sorted<Type>(tab))
+				cout << "Array is not sorted" << endl;
+			duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+			
 			cout << "Duration for " << tests_num[i] << " with reversed order: " << total_duration_per_test << endl;
-		
 		}
 	}
 };
@@ -450,8 +490,12 @@ int main() {
 	srand(time(NULL));
 	Tester test;
 
+	Heapsort<int> heap(10, 0, true);
+
 	bool test_sort = true;
 	if(test_sort) {
+		cout << endl << endl << " Heapsort " << endl << endl;
+		test.test_sort<int>(3);
 		cout << endl << endl << " MergeSort " << endl << endl;
 		test.test_sort<int>(0);
 		cout << endl << endl << " Quicksort " << endl << endl;
