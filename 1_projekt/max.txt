@@ -1,0 +1,117 @@
+
+
+ MergeSort 
+
+Max for 10000 with 0: 0.002657
+Max for 10000 with 0.25: 0.00217
+Max for 10000 with 0.5: 0.001718
+Max for 10000 with 0.75: 0.001937
+Max for 10000 with 0.95: 0.001717
+Max for 10000 with 0.99: 0.001721
+Max for 10000 with 0.997: 0.001319
+Max for 50000 with 0: 0.014883
+Max for 50000 with 0.25: 0.012763
+Max for 50000 with 0.5: 0.010998
+Max for 50000 with 0.75: 0.011398
+Max for 50000 with 0.95: 0.011336
+Max for 50000 with 0.99: 0.01309
+Max for 50000 with 0.997: 0.012154
+Max for 100000 with 0: 0.036444
+Max for 100000 with 0.25: 0.032642
+Max for 100000 with 0.5: 0.030613
+Max for 100000 with 0.75: 0.027435
+Max for 100000 with 0.95: 0.024577
+Max for 100000 with 0.99: 0.024881
+Max for 100000 with 0.997: 0.024774
+Max for 500000 with 0: 0.197679
+Max for 500000 with 0.25: 0.180701
+Max for 500000 with 0.5: 0.16196
+Max for 500000 with 0.75: 0.160618
+Max for 500000 with 0.95: 0.121783
+Max for 500000 with 0.99: 0.126041
+Max for 500000 with 0.997: 0.119606
+Max for 1000000 with 0: 0.398748
+Max for 1000000 with 0.25: 0.364869
+Max for 1000000 with 0.5: 0.314975
+Max for 1000000 with 0.75: 0.336676
+Max for 1000000 with 0.95: 0.272883
+Max for 1000000 with 0.99: 0.229742
+Max for 1000000 with 0.997: 0.275743
+
+
+ Quicksort 
+
+Max for 10000 with 0: 0.001875
+Max for 10000 with 0.25: 0.001653
+Max for 10000 with 0.5: 0.001473
+Max for 10000 with 0.75: 0.001302
+Max for 10000 with 0.95: 0.000965
+Max for 10000 with 0.99: 0.001009
+Max for 10000 with 0.997: 0.000871
+Max for 50000 with 0: 0.009268
+Max for 50000 with 0.25: 0.009006
+Max for 50000 with 0.5: 0.009246
+Max for 50000 with 0.75: 0.006793
+Max for 50000 with 0.95: 0.005929
+Max for 50000 with 0.99: 0.005313
+Max for 50000 with 0.997: 0.004812
+Max for 100000 with 0: 0.020061
+Max for 100000 with 0.25: 0.01999
+Max for 100000 with 0.5: 0.01742
+Max for 100000 with 0.75: 0.015367
+Max for 100000 with 0.95: 0.01805
+Max for 100000 with 0.99: 0.016052
+Max for 100000 with 0.997: 0.035186
+Max for 500000 with 0: 0.122689
+Max for 500000 with 0.25: 0.107522
+Max for 500000 with 0.5: 0.111383
+Max for 500000 with 0.75: 0.089713
+Max for 500000 with 0.95: 0.084508
+Max for 500000 with 0.99: 0.086714
+Max for 500000 with 0.997: 0.094537
+Max for 1000000 with 0: 0.254688
+Max for 1000000 with 0.25: 0.232798
+Max for 1000000 with 0.5: 0.226591
+Max for 1000000 with 0.75: 0.222743
+Max for 1000000 with 0.95: 0.198748
+Max for 1000000 with 0.99: 0.213375
+Max for 1000000 with 0.997: 0.199635
+
+
+ Introsort 
+
+Max for 10000 with 0: 0.001896
+Max for 10000 with 0.25: 0.001795
+Max for 10000 with 0.5: 0.002235
+Max for 10000 with 0.75: 0.002061
+Max for 10000 with 0.95: 0.001573
+Max for 10000 with 0.99: 0.001609
+Max for 10000 with 0.997: 0.001064
+Max for 50000 with 0: 0.013178
+Max for 50000 with 0.25: 0.012467
+Max for 50000 with 0.5: 0.012891
+Max for 50000 with 0.75: 0.012874
+Max for 50000 with 0.95: 0.009406
+Max for 50000 with 0.99: 0.009223
+Max for 50000 with 0.997: 0.00775
+Max for 100000 with 0: 0.02358
+Max for 100000 with 0.25: 0.023009
+Max for 100000 with 0.5: 0.025293
+Max for 100000 with 0.75: 0.027428
+Max for 100000 with 0.95: 0.026098
+Max for 100000 with 0.99: 0.032904
+Max for 100000 with 0.997: 0.034026
+Max for 500000 with 0: 0.131133
+Max for 500000 with 0.25: 0.132939
+Max for 500000 with 0.5: 0.12462
+Max for 500000 with 0.75: 0.115036
+Max for 500000 with 0.95: 0.099248
+Max for 500000 with 0.99: 0.124078
+Max for 500000 with 0.997: 0.102498
+Max for 1000000 with 0: 0.258112
+Max for 1000000 with 0.25: 0.243703
+Max for 1000000 with 0.5: 0.239185
+Max for 1000000 with 0.75: 0.233772
+Max for 1000000 with 0.95: 0.229366
+Max for 1000000 with 0.99: 0.247087
+Max for 1000000 with 0.997: 0.268488

@@ -1,0 +1,117 @@
+
+
+ MergeSort 
+
+Min for 10000 with 0: 0.00184
+Min for 10000 with 0.25: 0.001637
+Min for 10000 with 0.5: 0.001457
+Min for 10000 with 0.75: 0.001283
+Min for 10000 with 0.95: 0.001133
+Min for 10000 with 0.99: 0.001106
+Min for 10000 with 0.997: 0.0011
+Min for 50000 with 0: 0.010739
+Min for 50000 with 0.25: 0.009534
+Min for 50000 with 0.5: 0.008457
+Min for 50000 with 0.75: 0.007368
+Min for 50000 with 0.95: 0.006516
+Min for 50000 with 0.99: 0.006726
+Min for 50000 with 0.997: 0.006759
+Min for 100000 with 0: 0.023184
+Min for 100000 with 0.25: 0.020839
+Min for 100000 with 0.5: 0.017954
+Min for 100000 with 0.75: 0.015568
+Min for 100000 with 0.95: 0.014026
+Min for 100000 with 0.99: 0.013663
+Min for 100000 with 0.997: 0.013659
+Min for 500000 with 0: 0.127932
+Min for 500000 with 0.25: 0.11552
+Min for 500000 with 0.5: 0.105575
+Min for 500000 with 0.75: 0.095419
+Min for 500000 with 0.95: 0.089045
+Min for 500000 with 0.99: 0.088112
+Min for 500000 with 0.997: 0.088247
+Min for 1000000 with 0: 0.268409
+Min for 1000000 with 0.25: 0.244993
+Min for 1000000 with 0.5: 0.228793
+Min for 1000000 with 0.75: 0.208988
+Min for 1000000 with 0.95: 0.196073
+Min for 1000000 with 0.99: 0.18978
+Min for 1000000 with 0.997: 0.189732
+
+
+ Quicksort 
+
+Min for 10000 with 0: 0.001475
+Min for 10000 with 0.25: 0.001287
+Min for 10000 with 0.5: 0.001078
+Min for 10000 with 0.75: 0.00096
+Min for 10000 with 0.95: 0.000795
+Min for 10000 with 0.99: 0.000747
+Min for 10000 with 0.997: 0.000743
+Min for 50000 with 0: 0.008496
+Min for 50000 with 0.25: 0.007299
+Min for 50000 with 0.5: 0.006286
+Min for 50000 with 0.75: 0.005365
+Min for 50000 with 0.95: 0.004467
+Min for 50000 with 0.99: 0.004057
+Min for 50000 with 0.997: 0.004145
+Min for 100000 with 0: 0.017555
+Min for 100000 with 0.25: 0.015266
+Min for 100000 with 0.5: 0.013002
+Min for 100000 with 0.75: 0.012374
+Min for 100000 with 0.95: 0.011754
+Min for 100000 with 0.99: 0.012203
+Min for 100000 with 0.997: 0.012815
+Min for 500000 with 0: 0.097074
+Min for 500000 with 0.25: 0.090204
+Min for 500000 with 0.5: 0.085622
+Min for 500000 with 0.75: 0.080263
+Min for 500000 with 0.95: 0.076897
+Min for 500000 with 0.99: 0.075826
+Min for 500000 with 0.997: 0.075875
+Min for 1000000 with 0: 0.203374
+Min for 1000000 with 0.25: 0.190917
+Min for 1000000 with 0.5: 0.179133
+Min for 1000000 with 0.75: 0.169302
+Min for 1000000 with 0.95: 0.163631
+Min for 1000000 with 0.99: 0.162282
+Min for 1000000 with 0.997: 0.160945
+
+
+ Introsort 
+
+Min for 10000 with 0: 0.001684
+Min for 10000 with 0.25: 0.001483
+Min for 10000 with 0.5: 0.00124
+Min for 10000 with 0.75: 0.00146
+Min for 10000 with 0.95: 0.001207
+Min for 10000 with 0.99: 0.001036
+Min for 10000 with 0.997: 0.000984
+Min for 50000 with 0: 0.009552
+Min for 50000 with 0.25: 0.008496
+Min for 50000 with 0.5: 0.007402
+Min for 50000 with 0.75: 0.00868
+Min for 50000 with 0.95: 0.007343
+Min for 50000 with 0.99: 0.006075
+Min for 50000 with 0.997: 0.00583
+Min for 100000 with 0: 0.019978
+Min for 100000 with 0.25: 0.017587
+Min for 100000 with 0.5: 0.015648
+Min for 100000 with 0.75: 0.021871
+Min for 100000 with 0.95: 0.020969
+Min for 100000 with 0.99: 0.02144
+Min for 100000 with 0.997: 0.021863
+Min for 500000 with 0: 0.110775
+Min for 500000 with 0.25: 0.103475
+Min for 500000 with 0.5: 0.10064
+Min for 500000 with 0.75: 0.0931
+Min for 500000 with 0.95: 0.088778
+Min for 500000 with 0.99: 0.088664
+Min for 500000 with 0.997: 0.086752
+Min for 1000000 with 0: 0.230709
+Min for 1000000 with 0.25: 0.219992
+Min for 1000000 with 0.5: 0.211255
+Min for 1000000 with 0.75: 0.195349
+Min for 1000000 with 0.95: 0.187916
+Min for 1000000 with 0.99: 0.188905
+Min for 1000000 with 0.997: 0.190738
