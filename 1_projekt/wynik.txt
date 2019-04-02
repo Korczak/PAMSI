@@ -1,271 +1,130 @@
  MergeSort 
 
-<<<<<<< HEAD
-Duration for 10000 with 0: 0.00185071
-Duration for 10000 with 0.25: 0.00163114
-Duration for 10000 with 0.5: 0.00145238
-Duration for 10000 with 0.75: 0.00126995
-Duration for 10000 with 0.95: 0.00111747
-Duration for 10000 with 0.99: 0.00109158
-Duration for 10000 with 0.997: 0.00110278
-Duration for 10000 with reversed order: 0.098072
-Duration for 50000 with 0: 0.0104885
-Duration for 50000 with 0.25: 0.00933699
-Duration for 50000 with 0.5: 0.00828233
-Duration for 50000 with 0.75: 0.00719049
-Duration for 50000 with 0.95: 0.00634513
-Duration for 50000 with 0.99: 0.00620828
-Duration for 50000 with 0.997: 0.00616707
-Duration for 50000 with reversed order: 0.565198
-Duration for 100000 with 0: 0.0221951
-Duration for 100000 with 0.25: 0.0196897
-Duration for 100000 with 0.5: 0.0173999
-Duration for 100000 with 0.75: 0.0151676
-Duration for 100000 with 0.95: 0.0135983
-Duration for 100000 with 0.99: 0.0133037
-Duration for 100000 with 0.997: 0.0132892
-Duration for 100000 with reversed order: 1.18778
-Duration for 500000 with 0: 0.125013
-Duration for 500000 with 0.25: 0.112916
-Duration for 500000 with 0.5: 0.102868
-Duration for 500000 with 0.75: 0.0930236
-Duration for 500000 with 0.95: 0.0867872
-Duration for 500000 with 0.99: 0.0858857
-Duration for 500000 with 0.997: 0.0857427
-Duration for 500000 with reversed order: 6.65527
-Duration for 1000000 with 0: 0.263877
-Duration for 1000000 with 0.25: 0.237086
-Duration for 1000000 with 0.5: 0.219971
-Duration for 1000000 with 0.75: 0.202472
-Duration for 1000000 with 0.95: 0.191036
-Duration for 1000000 with 0.99: 0.193324
-Duration for 1000000 with 0.997: 0.193272
-Duration for 1000000 with reversed order: 14.1363
-=======
-Duration for 10000 with 0: 0.001803
-Duration for 10000 with 0.25: 0.001623
-Duration for 10000 with 0.5: 0.001417
-Duration for 10000 with 0.75: 0.001288
-Duration for 10000 with 0.95: 0.001289
-Duration for 10000 with 0.99: 0.001269
-Duration for 10000 with 0.997: 0.001264
-Duration for 10000 with reversed order: 0.001227
-
-Duration for 50000 with 0: 0.011855
-Duration for 50000 with 0.25: 0.009641
-Duration for 50000 with 0.5: 0.008093
-Duration for 50000 with 0.75: 0.007066
-Duration for 50000 with 0.95: 0.00625
-Duration for 50000 with 0.99: 0.006536
-Duration for 50000 with 0.997: 0.006352
-Duration for 50000 with reversed order: 0.00543
-
-Duration for 100000 with 0: 0.022365
-Duration for 100000 with 0.25: 0.019386
-Duration for 100000 with 0.5: 0.017415
-Duration for 100000 with 0.75: 0.014898
-Duration for 100000 with 0.95: 0.013907
-Duration for 100000 with 0.99: 0.012975
-Duration for 100000 with 0.997: 0.013245
-Duration for 100000 with reversed order: 0.011518
-
-Duration for 500000 with 0: 0.123569
-Duration for 500000 with 0.25: 0.111124
-Duration for 500000 with 0.5: 0.104315
-Duration for 500000 with 0.75: 0.091244
-Duration for 500000 with 0.95: 0.085424
-Duration for 500000 with 0.99: 0.084406
-Duration for 500000 with 0.997: 0.084887
-Duration for 500000 with reversed order: 0.065014
-
-Duration for 1000000 with 0: 0.260451
-Duration for 1000000 with 0.25: 0.233836
-Duration for 1000000 with 0.5: 0.218923
-Duration for 1000000 with 0.75: 0.197513
-Duration for 1000000 with 0.95: 0.186937
-Duration for 1000000 with 0.99: 0.185373
-Duration for 1000000 with 0.997: 0.184555
-Duration for 1000000 with reversed order: 0.137479
->>>>>>> 970f13e6b2ea45d30a2c8de64ffd17058ee61274
+Duration for 10000 with 0: 0.00184285
+Duration for 10000 with 0.25: 0.00163749
+Duration for 10000 with 0.5: 0.00144062
+Duration for 10000 with 0.75: 0.00124758
+Duration for 10000 with 0.95: 0.00112705
+Duration for 10000 with 0.99: 0.00108044
+Duration for 10000 with 0.997: 0.00108209
+Duration for 10000 with reversed order: 0.000996
+Duration for 50000 with 0: 0.0106628
+Duration for 50000 with 0.25: 0.00964903
+Duration for 50000 with 0.5: 0.00832369
+Duration for 50000 with 0.75: 0.00718075
+Duration for 50000 with 0.95: 0.00645855
+Duration for 50000 with 0.99: 0.00636298
+Duration for 50000 with 0.997: 0.00679729
+Duration for 50000 with reversed order: 0.008576
+Duration for 100000 with 0: 0.0235874
+Duration for 100000 with 0.25: 0.0203967
+Duration for 100000 with 0.5: 0.0173893
+Duration for 100000 with 0.75: 0.0151816
+Duration for 100000 with 0.95: 0.0141568
+Duration for 100000 with 0.99: 0.0134345
+Duration for 100000 with 0.997: 0.0133595
+Duration for 100000 with reversed order: 0.012295
+Duration for 500000 with 0: 0.126762
+Duration for 500000 with 0.25: 0.113666
+Duration for 500000 with 0.5: 0.103588
+Duration for 500000 with 0.75: 0.0942444
+Duration for 500000 with 0.95: 0.088052
+Duration for 500000 with 0.99: 0.0870961
+Duration for 500000 with 0.997: 0.0869465
+Duration for 500000 with reversed order: 0.070146
+Duration for 1000000 with 0: 0.264541
+Duration for 1000000 with 0.25: 0.240861
+Duration for 1000000 with 0.5: 0.21907
+Duration for 1000000 with 0.75: 0.201712
+Duration for 1000000 with 0.95: 0.190471
+Duration for 1000000 with 0.99: 0.189349
+Duration for 1000000 with 0.997: 0.188959
+Duration for 1000000 with reversed order: 0.142598
 
 
  Quicksort 
 
-<<<<<<< HEAD
-Duration for 10000 with 0: 0.00148215
-Duration for 10000 with 0.25: 0.00137668
-Duration for 10000 with 0.5: 0.00124607
-Duration for 10000 with 0.75: 0.00102952
-Duration for 10000 with 0.95: 0.00082469
-Duration for 10000 with 0.99: 0.00075195
-Duration for 10000 with 0.997: 0.00074618
-Duration for 10000 with reversed order: 0.041954
-Duration for 50000 with 0: 0.0082972
-Duration for 50000 with 0.25: 0.00755769
-Duration for 50000 with 0.5: 0.00679358
-Duration for 50000 with 0.75: 0.00568541
-Duration for 50000 with 0.95: 0.00441251
-Duration for 50000 with 0.99: 0.00403328
-Duration for 50000 with 0.997: 0.00411977
-Duration for 50000 with reversed order: 0.231195
-Duration for 100000 with 0: 0.0174615
-Duration for 100000 with 0.25: 0.0158814
-Duration for 100000 with 0.5: 0.0140836
-Duration for 100000 with 0.75: 0.01317
-Duration for 100000 with 0.95: 0.0125989
-Duration for 100000 with 0.99: 0.0125034
-Duration for 100000 with 0.997: 0.014573
-Duration for 100000 with reversed order: 0.495822
-Duration for 500000 with 0: 0.10128
-Duration for 500000 with 0.25: 0.0935295
-Duration for 500000 with 0.5: 0.0886523
-Duration for 500000 with 0.75: 0.081563
-Duration for 500000 with 0.95: 0.0773109
-Duration for 500000 with 0.99: 0.0776591
-Duration for 500000 with 0.997: 0.0772491
-Duration for 500000 with reversed order: 2.72651
-Duration for 1000000 with 0: 0.204575
-Duration for 1000000 with 0.25: 0.192433
-Duration for 1000000 with 0.5: 0.184525
-Duration for 1000000 with 0.75: 0.173562
-Duration for 1000000 with 0.95: 0.167101
-Duration for 1000000 with 0.99: 0.164304
-Duration for 1000000 with 0.997: 0.165221
-Duration for 1000000 with reversed order: 5.73903
-=======
-Duration for 10000 with 0: 0.001483
-Duration for 10000 with 0.25: 0.001327
-Duration for 10000 with 0.5: 0.001151
-Duration for 10000 with 0.75: 0.001006
-Duration for 10000 with 0.95: 0.000821
-Duration for 10000 with 0.99: 0.000756
-Duration for 10000 with 0.997: 0.000766
-Duration for 10000 with reversed order: 0.000478
-
-Duration for 50000 with 0: 0.008599
-Duration for 50000 with 0.25: 0.007016
-Duration for 50000 with 0.5: 0.00729
-Duration for 50000 with 0.75: 0.00572
-Duration for 50000 with 0.95: 0.004431
-Duration for 50000 with 0.99: 0.003897
-Duration for 50000 with 0.997: 0.003974
-Duration for 50000 with reversed order: 0.002332
-
-Duration for 100000 with 0: 0.017667
-Duration for 100000 with 0.25: 0.016557
-Duration for 100000 with 0.5: 0.012687
-Duration for 100000 with 0.75: 0.012142
-Duration for 100000 with 0.95: 0.012666
-Duration for 100000 with 0.99: 0.012564
-Duration for 100000 with 0.997: 0.016164
-Duration for 100000 with reversed order: 0.005384
-
-Duration for 500000 with 0: 0.098771
-Duration for 500000 with 0.25: 0.092417
-Duration for 500000 with 0.5: 0.084548
-Duration for 500000 with 0.75: 0.080722
-Duration for 500000 with 0.95: 0.076291
-Duration for 500000 with 0.99: 0.075548
-Duration for 500000 with 0.997: 0.076169
-Duration for 500000 with reversed order: 0.028047
-
-Duration for 1000000 with 0: 0.200897
-Duration for 1000000 with 0.25: 0.191957
-Duration for 1000000 with 0.5: 0.180842
-Duration for 1000000 with 0.75: 0.169392
-Duration for 1000000 with 0.95: 0.161383
-Duration for 1000000 with 0.99: 0.160891
-Duration for 1000000 with 0.997: 0.163169
-Duration for 1000000 with reversed order: 0.057741
->>>>>>> 970f13e6b2ea45d30a2c8de64ffd17058ee61274
+Duration for 10000 with 0: 0.00153118
+Duration for 10000 with 0.25: 0.00142036
+Duration for 10000 with 0.5: 0.00127373
+Duration for 10000 with 0.75: 0.0010482
+Duration for 10000 with 0.95: 0.00084527
+Duration for 10000 with 0.99: 0.00076078
+Duration for 10000 with 0.997: 0.00077242
+Duration for 10000 with reversed order: 0.000481
+Duration for 50000 with 0: 0.00853364
+Duration for 50000 with 0.25: 0.0078406
+Duration for 50000 with 0.5: 0.00683363
+Duration for 50000 with 0.75: 0.00572743
+Duration for 50000 with 0.95: 0.00443711
+Duration for 50000 with 0.99: 0.00403996
+Duration for 50000 with 0.997: 0.00415358
+Duration for 50000 with reversed order: 0.002619
+Duration for 100000 with 0: 0.0178689
+Duration for 100000 with 0.25: 0.0162536
+Duration for 100000 with 0.5: 0.0145218
+Duration for 100000 with 0.75: 0.0126708
+Duration for 100000 with 0.95: 0.0125513
+Duration for 100000 with 0.99: 0.0125226
+Duration for 100000 with 0.997: 0.0139993
+Duration for 100000 with reversed order: 0.005474
+Duration for 500000 with 0: 0.0990077
+Duration for 500000 with 0.25: 0.0932925
+Duration for 500000 with 0.5: 0.0901201
+Duration for 500000 with 0.75: 0.083093
+Duration for 500000 with 0.95: 0.0783897
+Duration for 500000 with 0.99: 0.0792342
+Duration for 500000 with 0.997: 0.0776671
+Duration for 500000 with reversed order: 0.030563
+Duration for 1000000 with 0: 0.208251
+Duration for 1000000 with 0.25: 0.199082
+Duration for 1000000 with 0.5: 0.188268
+Duration for 1000000 with 0.75: 0.17566
+Duration for 1000000 with 0.95: 0.16698
+Duration for 1000000 with 0.99: 0.166179
+Duration for 1000000 with 0.997: 0.165975
+Duration for 1000000 with reversed order: 0.064528
 
 
  Introsort 
 
-<<<<<<< HEAD
-Duration for 10000 with 0: 0.00177265
-Duration for 10000 with 0.25: 0.0016639
-Duration for 10000 with 0.5: 0.00151519
-Duration for 10000 with 0.75: 0.00177454
-Duration for 10000 with 0.95: 0.00133739
-Duration for 10000 with 0.99: 0.00109138
-Duration for 10000 with 0.997: 0.0010162
-Duration for 10000 with reversed order: 0.053823
-Duration for 50000 with 0: 0.00996229
-Duration for 50000 with 0.25: 0.00936013
-Duration for 50000 with 0.5: 0.00845627
-Duration for 50000 with 0.75: 0.0101189
-Duration for 50000 with 0.95: 0.00857141
-Duration for 50000 with 0.99: 0.00685227
-Duration for 50000 with 0.997: 0.00629379
-Duration for 50000 with reversed order: 0.288898
-Duration for 100000 with 0: 0.0207367
-Duration for 100000 with 0.25: 0.0191961
-Duration for 100000 with 0.5: 0.0177405
-Duration for 100000 with 0.75: 0.0262977
-Duration for 100000 with 0.95: 0.0250106
-Duration for 100000 with 0.99: 0.0252615
-Duration for 100000 with 0.997: 0.0256512
-Duration for 100000 with reversed order: 0.591738
-Duration for 500000 with 0: 0.111417
-Duration for 500000 with 0.25: 0.105143
-Duration for 500000 with 0.5: 0.10377
-Duration for 500000 with 0.75: 0.0985371
-Duration for 500000 with 0.95: 0.0940571
-Duration for 500000 with 0.99: 0.0919407
-Duration for 500000 with 0.997: 0.0918166
-Duration for 500000 with reversed order: 3.25436
-Duration for 1000000 with 0: 0.236743
-Duration for 1000000 with 0.25: 0.228316
-Duration for 1000000 with 0.5: 0.223493
-Duration for 1000000 with 0.75: 0.209743
-Duration for 1000000 with 0.95: 0.197505
-Duration for 1000000 with 0.99: 0.193976
-Duration for 1000000 with 0.997: 0.20095
-Duration for 1000000 with reversed order: 6.72297
-=======
-Duration for 10000 with 0: 0.00181
-Duration for 10000 with 0.25: 0.001619
-Duration for 10000 with 0.5: 0.001708
-Duration for 10000 with 0.75: 0.001825
-Duration for 10000 with 0.95: 0.001347
-Duration for 10000 with 0.99: 0.001086
-Duration for 10000 with 0.997: 0.001022
-Duration for 10000 with reversed order: 0.000697
-
-Duration for 50000 with 0: 0.010152
-Duration for 50000 with 0.25: 0.009126
-Duration for 50000 with 0.5: 0.007743
-Duration for 50000 with 0.75: 0.010479
-Duration for 50000 with 0.95: 0.008143
-Duration for 50000 with 0.99: 0.007077
-Duration for 50000 with 0.997: 0.006257
-Duration for 50000 with reversed order: 0.002859
-
-Duration for 100000 with 0: 0.020392
-Duration for 100000 with 0.25: 0.018846
-Duration for 100000 with 0.5: 0.018088
-Duration for 100000 with 0.75: 0.025524
-Duration for 100000 with 0.95: 0.024624
-Duration for 100000 with 0.99: 0.025627
-Duration for 100000 with 0.997: 0.026341
-Duration for 100000 with reversed order: 0.005981
-
-Duration for 500000 with 0: 0.109199
-Duration for 500000 with 0.25: 0.103965
-Duration for 500000 with 0.5: 0.103079
-Duration for 500000 with 0.75: 0.096503
-Duration for 500000 with 0.95: 0.093251
-Duration for 500000 with 0.99: 0.087841
-Duration for 500000 with 0.997: 0.096328
-Duration for 500000 with reversed order: 0.034327
-
-Duration for 1000000 with 0: 0.228116
-Duration for 1000000 with 0.25: 0.226146
-Duration for 1000000 with 0.5: 0.21896
-Duration for 1000000 with 0.75: 0.205182
-Duration for 1000000 with 0.95: 0.201801
-Duration for 1000000 with 0.99: 0.192486
-Duration for 1000000 with 0.997: 0.197218
-Duration for 1000000 with reversed order: 0.069063
->>>>>>> 970f13e6b2ea45d30a2c8de64ffd17058ee61274
+Duration for 10000 with 0: 0.00174264
+Duration for 10000 with 0.25: 0.00160383
+Duration for 10000 with 0.5: 0.00148068
+Duration for 10000 with 0.75: 0.00152606
+Duration for 10000 with 0.95: 0.00122141
+Duration for 10000 with 0.99: 0.00104163
+Duration for 10000 with 0.997: 0.00099039
+Duration for 10000 with reversed order: 0.000591
+Duration for 50000 with 0: 0.00969426
+Duration for 50000 with 0.25: 0.00896867
+Duration for 50000 with 0.5: 0.00835335
+Duration for 50000 with 0.75: 0.00907547
+Duration for 50000 with 0.95: 0.00747043
+Duration for 50000 with 0.99: 0.0061812
+Duration for 50000 with 0.997: 0.00594972
+Duration for 50000 with reversed order: 0.003237
+Duration for 100000 with 0: 0.020603
+Duration for 100000 with 0.25: 0.0191585
+Duration for 100000 with 0.5: 0.016922
+Duration for 100000 with 0.75: 0.0221622
+Duration for 100000 with 0.95: 0.0207834
+Duration for 100000 with 0.99: 0.0211136
+Duration for 100000 with 0.997: 0.0215301
+Duration for 100000 with reversed order: 0.006527
+Duration for 500000 with 0: 0.108527
+Duration for 500000 with 0.25: 0.103194
+Duration for 500000 with 0.5: 0.10125
+Duration for 500000 with 0.75: 0.0957138
+Duration for 500000 with 0.95: 0.0906347
+Duration for 500000 with 0.99: 0.0895026
+Duration for 500000 with 0.997: 0.0894733
+Duration for 500000 with reversed order: 0.036774
+Duration for 1000000 with 0: 0.23018
+Duration for 1000000 with 0.25: 0.220244
+Duration for 1000000 with 0.5: 0.219942
+Duration for 1000000 with 0.75: 0.202137
+Duration for 1000000 with 0.95: 0.192675
+Duration for 1000000 with 0.99: 0.190578
+Duration for 1000000 with 0.997: 0.193112
+Duration for 1000000 with reversed order: 0.074377
