@@ -120,11 +120,13 @@ public:
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
 
+		delete[] tab;
+
 	}
 
 	MergeSort(int num_elements, T tab[], bool debug = false) {
 		n = num_elements;
-		pom = new int[n];
+		pom = new T[n];
 
 		if(debug)
 			cout << "PRZED: " << tab << endl;
@@ -136,13 +138,13 @@ public:
 	}
 
 	~MergeSort() {
-		delete []pom;
+		delete [] pom;
+		//delete [] tab;
 	}
 };
 
 template <class T>
 class Quicksort {
-	T *pom;
 	T *tab;
 
 	int get_pivot(T tab[], int left, int mid, int right) {
@@ -198,8 +200,7 @@ class Quicksort {
 public:
 	Quicksort(int num_elements, int first_element_to_randomize = 0, bool debug = false) {
 		n = num_elements;
-		tab = new int[n];
-		pom = new int[n];
+		tab = new T[n];
 
 		randomize_tab(tab, first_element_to_randomize);
 		if(debug) 
@@ -209,11 +210,12 @@ public:
 			cout << "PO: " << tab << endl;
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
+
+		delete[] tab;
 	}
 
 	Quicksort(int num_elements, int tab[]) {
 		n = num_elements;
-		pom = new int[n];
 
 		//cout << "PRZED: " << tab << endl;
 		split(tab, 0, n-1);
@@ -222,9 +224,6 @@ public:
 		//cout << "PO: " << tab << endl;
 	}
 
-	~Quicksort() {
-		delete[] pom;
-	}
 };
 
 template <class T>
@@ -283,6 +282,8 @@ public:
 
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
+
+		delete [] tab;
 	}
 
 	Heapsort(int num_elements, T tab[], bool debug = false) {
@@ -296,6 +297,10 @@ public:
 
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
+	}
+
+	~Heapsort() {
+		//delete[] tab;
 	}
 };
 
@@ -339,10 +344,11 @@ class Introsort {
 			for(int i = left; i <= right; i++) {
 				pom[i - left] = tab[i];
 			}
-			Heapsort<T> sort(num_elements, pom);
+			Heapsort<T> sort(num_elements + 1, pom);
 			for(int i = left; i <= right; i++) {
 				tab[i] = pom[i - left];
 			}
+
 			delete[] pom;
 		}
 		else {
@@ -360,7 +366,9 @@ class Introsort {
 public:
 	Introsort(int num_elements, int first_element_to_randomize = 0, bool debug = false) {
 		n = num_elements;
+
 		tab = new T[n];
+
 		randomize_tab(tab, first_element_to_randomize);
 		if(debug)
 			cout << "PRZED: " << tab << endl;
@@ -374,10 +382,12 @@ public:
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
 
+		delete [] tab;
 	}
 
 	Introsort(int num_elements, T tab[], bool debug = false) {
 		n = num_elements;
+
 
 		if(debug)
 			cout << "PRZED: " << tab << endl;
@@ -391,6 +401,12 @@ public:
 		if(!is_array_sorted<T>(tab))
 			cout << "Array is not sorted" << endl;
 	}
+
+	~Introsort() {
+		//delete [] pom;
+		//delete[] tab;
+	}
+
 };
 
 class Tester {
@@ -412,23 +428,26 @@ public:
 					switch(sort_method) {
 						case 0:
 						{
-							MergeSort<Type> merge(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
-							//delete merge;
+							MergeSort<Type> *merge = new MergeSort<Type>(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							delete merge;
 							break;
 						}	
 						case 1:
 						{
-							Quicksort<Type> quick(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							Quicksort<Type> *quick = new Quicksort<Type>(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							delete quick;
 							break;
 						}	
 						case 2:
 						{
-							Introsort<Type> intro(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							Introsort<Type> *intro = new Introsort<Type>(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							delete intro;
 							break;
 						}
 						case 3:
 						{
-							Heapsort<Type> heap(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							Heapsort<Type> *heap = new Heapsort<Type>(tests_num[i], (int)(tests_num[i] * tests_first_elem_to_random[j]));
+							delete heap;
 							break;
 						}
 						default:
@@ -478,7 +497,7 @@ public:
 				cout << "Array is not sorted" << endl;
 			duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
 			
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << total_duration_per_test << endl;
+			cout << "Duration for " << tests_num[i] << " with reversed order: " << duration << endl;
 		}
 	}
 };
@@ -490,16 +509,19 @@ int main() {
 	srand(time(NULL));
 	Tester test;
 
-	Heapsort<int> heap(10, 0, true);
-
+	//Heapsort<int> heap(10, 0, true);
+	//Introsort<int> intro (100, 0, true);
 	bool test_sort = true;
 	if(test_sort) {
-		cout << endl << endl << " Heapsort " << endl << endl;
-		test.test_sort<int>(3);
+		
+		//cout << endl << endl << " Heapsort " << endl << endl;
+		//test.test_sort<int>(3);
+		
 		cout << endl << endl << " MergeSort " << endl << endl;
 		test.test_sort<int>(0);
 		cout << endl << endl << " Quicksort " << endl << endl;
 		test.test_sort<int>(1);
+		
 		cout << endl << endl << " Introsort " << endl << endl;
 		test.test_sort<int>(2);
 		
