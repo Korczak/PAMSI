@@ -2,10 +2,16 @@
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
+#include <fstream>
 
 using namespace std; 
 
 int n;
+
+ofstream min_file;
+ofstream max_file;
+ofstream avg_file;
+
 
 template <class T>
 void randomize_tab(T tab[], int first_to_randomize = 0) {
@@ -414,6 +420,8 @@ class Tester {
 	float tests_first_elem_to_random[7] = {0, 0.25, 0.50, 0.75, 0.95, 0.99, 0.997};
 	int number_of_tests = 100;
 	double duration = 0;
+	double min = 999;
+	double max = 0;
 	double total_duration_per_test = 0;
 public:
 
@@ -422,6 +430,8 @@ public:
 		for (int i = 0; i < sizeof(tests_num)/sizeof(tests_num[0]); i++) {
 			for (int j = 0; j < sizeof(tests_first_elem_to_random)/sizeof(tests_first_elem_to_random[0]); j++) {
 				total_duration_per_test = 0;
+				max = 0;
+				min = 999;
 				for(int k = 0; k < number_of_tests; k++) {
 					clock_t start = clock();
 
@@ -454,11 +464,17 @@ public:
 							break;
 					}
 					duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+					if(duration > max)
+						max = duration;
+					if(duration < min)
+						min = duration;
 					total_duration_per_test += duration;
 					
 				}
 				duration = total_duration_per_test / number_of_tests;
-				cout << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << duration << endl;					
+				avg_file << "Duration for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << duration << endl;					
+				max_file << "Max for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << max << endl;					
+				min_file << "Min for " << tests_num[i] << " with " << tests_first_elem_to_random[j] << ": " << min << endl;
 			}	
 
 			Type tab[tests_num[i]];
@@ -497,7 +513,7 @@ public:
 				cout << "Array is not sorted" << endl;
 			duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
 			
-			cout << "Duration for " << tests_num[i] << " with reversed order: " << duration << endl;
+			avg_file << "Duration for " << tests_num[i] << " with reversed order: " << duration << endl;
 		}
 	}
 };
@@ -507,6 +523,12 @@ public:
 
 int main() {
 	srand(time(NULL));
+
+	min_file.open("min.txt");
+	max_file.open("max.txt");
+	avg_file.open("avg.txt");
+
+
 	Tester test;
 
 	//Heapsort<int> heap(10, 0, true);
@@ -517,14 +539,30 @@ int main() {
 		//cout << endl << endl << " Heapsort " << endl << endl;
 		//test.test_sort<int>(3);
 		
-		cout << endl << endl << " MergeSort " << endl << endl;
+		min_file << endl << endl << " MergeSort " << endl << endl;
+		max_file << endl << endl << " MergeSort " << endl << endl;
+		avg_file << endl << endl << " MergeSort " << endl << endl;
+
+
 		test.test_sort<int>(0);
-		cout << endl << endl << " Quicksort " << endl << endl;
+
+		min_file << endl << endl << " Quicksort " << endl << endl;
+		max_file << endl << endl << " Quicksort " << endl << endl;
+		avg_file << endl << endl << " Quicksort " << endl << endl;
+
 		test.test_sort<int>(1);
 		
-		cout << endl << endl << " Introsort " << endl << endl;
+		min_file << endl << endl << " Introsort " << endl << endl;
+		max_file << endl << endl << " Introsort " << endl << endl;
+		avg_file << endl << endl << " Introsort " << endl << endl;
+
 		test.test_sort<int>(2);
 		
 	}
+
+	min_file.close();
+	max_file.close();
+	avg_file.close();
+
 	return 0;
 }
