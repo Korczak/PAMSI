@@ -39,7 +39,7 @@ void printArray(double arr[], int arr_size) {
 }
 
 
-class BellmanFord
+class GraphClass
 {
 private:
 	struct Graph* graph;
@@ -53,12 +53,12 @@ private:
 		}
 	}
 public:
-	BellmanFord(int V) {
+	GraphClass(int V) {
 		graph = new Graph;
 		createGraph(V);
 	}	
 
-	~BellmanFord() {
+	~GraphClass() {
 		for(int V = 0; V < graph->V; V++) {
 			Edge* edges[graph->V];
 			Edge* edge = &graph->edge[V];
@@ -82,7 +82,6 @@ public:
 		while(edge->dest != -1) {
 			edge = edge->next;
 		}
-
 		struct Edge* newEdge = new Edge;
 		newEdge->dest = -1;
 		edge->addVertex(dest, weight);
@@ -119,70 +118,85 @@ public:
 		for(int i = 0; i < V; i++) {
 			struct Edge* edge = &graph->edge[i];
 			while(edge->dest != -1) {
+				cout << edge->dest << " ";
 				edge = edge->next;
 			}
+			cout << endl;
 		}
 	}
 
-	void getDistance(int source, bool debug = false) {
-		int V = graph->V;
-		double cost[V];
-		int maxCost = 99999;
-
-
-		for(int i = 0; i < V; i++) 
-			cost[i] = maxCost;
-		cost[source] = 0;
-
-
-		bool isChange = true;
-		for(int v = 0; v < V && isChange; v++) {
-			isChange = false;
-			for(int i = 0; i < V; i++) {
-		
-				Edge* edge = &graph->edge[i];
-				while(edge->dest != -1) {
-
-					if(cost[edge->dest] > cost[i] + edge->weight) {
-						cost[edge->dest] = cost[i] + edge->weight;
-						isChange = true;
-					}
-					edge = edge->next;
-				}
-			}
-		}
-
-		for(int i = 0; i < V; i++) {
-			Edge* edge = &graph->edge[i];
-			while(edge->dest != -1) {
-				if(edge->weight != 0) {
-					if(cost[i] != maxCost && cost[i] + edge->weight < cost[edge->dest]) {
-						cout << "Graph has negative cycle" << endl;
-						return;
-					}
-				}
-				edge = edge->next;
-			}
-		}
-		if(debug)
-			printArray(cost, V);
-	}
-
+	inline int getV() { return graph->V; }
+	inline Edge* getEdge(int i) { return &graph->edge[i]; }
 };
 
+void getDistance(GraphClass *graph, int source, bool debug = false) {
+	int V = graph->getV();
+	double cost[V];
+	int maxCost = 99999;
 
-void getRandomGraph(BellmanFord* graph, int V, double Density) {
+
+	for(int i = 0; i < V; i++) 
+		cost[i] = maxCost;
+	cost[source] = 0;
+
+
+	bool isChange = true;
+	for(int v = 0; v < V && isChange; v++) {
+		isChange = false;
+		for(int i = 0; i < V; i++) {
+	
+			Edge* edge = graph->getEdge(i);
+			while(edge->dest != -1) {
+
+				if(cost[edge->dest] > cost[i] + edge->weight) {
+					cost[edge->dest] = cost[i] + edge->weight;
+					isChange = true;
+				}
+				edge = edge->next;
+			}
+		}
+	}
+
+	for(int i = 0; i < V; i++) {
+		Edge* edge = graph->getEdge(i);
+		while(edge->dest != -1) {
+			if(edge->weight != 0) {
+				if(cost[i] != maxCost && cost[i] + edge->weight < cost[edge->dest]) {
+					cout << "Graph has negative cycle" << endl;
+					return;
+				}
+			}
+			edge = edge->next;
+		}
+	}
+
+	if(debug)
+		printArray(cost, V);
+}
+
+
+void getRandomGraph(GraphClass* graph, int V, double Density) {
 	int source = 0;
 	int dest = 0;
 	double weight = 0;
 
 	int E = (int)(Density * V * (V-1)) / 2;
 
+	if(Density == 1) {
+		for(int i = 0; i < V; i++) {
+			for(int j = i + 1; j < V; j++) {
+				weight = rand() % 20;
+				graph->addEdge(i, j, weight);
+			}
+		}
+		return;
+	}
 
 	bool canAddEdge = false;
 	for(int i = 0; i < E; i++) {
 		canAddEdge = false;
 		while(!canAddEdge) {
+
 			source = rand() % V;
 			dest = rand() % V;
 			weight = rand() % 20;
@@ -205,19 +219,19 @@ void testAlgorithm() {
 	double duration;
 	double totalTime = 0;
 
-	for(int i = 0; i < sizeof(numVertex)/sizeof(numVertex[0]); i++) {
-		for(int j = 0; j < sizeof(density)/sizeof(density[0]); j++) {
+	for(int i = 4; i < sizeof(numVertex)/sizeof(numVertex[0]); i++) {
+		for(int j = 3; j < sizeof(density)/sizeof(density[0]); j++) {
 			minTime = 999;
 			maxTime = 0;
 			totalTime = 0;
 
-			for(int k = 0; k < numTests; k++) {
-				BellmanFord* graph = new BellmanFord(numVertex[i]);
+			for(int k = 0; k < 10; k++) {
+				GraphClass* graph = new GraphClass(numVertex[i]);
 				clock_t start2 = clock();
 				getRandomGraph(graph, numVertex[i], density[j]);
 				cout << ((clock() - start2) / (double) CLOCKS_PER_SEC) << " " << numVertex[i] << endl;
 				clock_t start = clock();
-				graph->getDistance(0);
+				getDistance(graph, 0);
 				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
 				if(minTime > duration)
 					minTime = duration;
@@ -227,9 +241,9 @@ void testAlgorithm() {
 				delete graph;
 			}
 			double avgTime = totalTime / numTests;
-			avgFile << "AVG::Num vertex " << numVertex[i] << " density " << density[j] << ": " << avgTime << endl;
-			minFile << "MIN::Num vertex " << numVertex[i] << " density " << density[j] << ": " << minTime << endl;
-			maxFile << "MAX::Num vertex " << numVertex[i] << " density " << density[j] << ": " << maxTime << endl;
+			cout << "AVG::Num vertex " << numVertex[i] << " density " << density[j] << ": " << avgTime << endl;
+			cout << "MIN::Num vertex " << numVertex[i] << " density " << density[j] << ": " << minTime << endl;
+			cout << "MAX::Num vertex " << numVertex[i] << " density " << density[j] << ": " << maxTime << endl;
 		} 
 	}
 }
@@ -237,7 +251,7 @@ void testAlgorithm() {
 istream& readGraph(istream& input) {
 	int V, E, source;
 	input >> V >> E >> source;
-	BellmanFord* graph = new BellmanFord(V);
+	GraphClass* graph = new GraphClass(V);
 
 	for(int i = 0; i < E; i++) {
 		int src, dst;
@@ -246,22 +260,22 @@ istream& readGraph(istream& input) {
 		graph->addDirectedEdge(src, dst, weight);
 	}
 
-	graph->getDistance(source, true);
+	getDistance(graph, source, true);
 	return input;
 }
 
 
 int main() {
 	srand(time(NULL));
-	minFile.open("min_1.txt");
-	maxFile.open("max_1.txt");
-	avgFile.open("avg_1.txt");
+	//minFile.open("min_1.txt");
+	//maxFile.open("max_1.txt");
+	//avgFile.open("avg_1.txt");
 
 
-	testAlgorithm();
-	/*
+	//testAlgorithm();
+	
 	int V = 5;
-	BellmanFord graph(V);
+	GraphClass graph(V);
 
 	graph.addEdge(0, 1, 1);
 	graph.addEdge(0, 2, 1);
@@ -272,6 +286,6 @@ int main() {
 	graph.printEdges();
 	int source = 0;
 	cout << "Distance from " << source << " is: " << endl;
-	graph.getDistance(0);
-	*/
+	getDistance(&graph, 0, true);
+	
 }
