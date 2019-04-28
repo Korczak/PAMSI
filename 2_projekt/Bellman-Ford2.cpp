@@ -26,7 +26,7 @@ void printArray(double arr[], int arr_size) {
 }
 
 
-class BellmanFord
+class GraphClass
 {
 private:
 	struct Graph* graph;
@@ -45,12 +45,12 @@ private:
 		}
 	}
 public:
-	BellmanFord(int V) {
+	GraphClass(int V) {
 		graph = new Graph;
 		createGraph(V);
 	}
 
-	~BellmanFord() {
+	~GraphClass() {
 		for(int i = 0; i < graph->V; i++) 
 			delete[] graph->edge[i];
 
@@ -102,59 +102,62 @@ public:
 		}
 	}
 
-	/*
-		Calculates distance from source to any other vertex
+	inline int getV() { return graph->V; }
+	inline double getEdge(int src, int dest) { return graph->edge[src][dest]; }
+};
 
-		:param source: source vertex from where calculate dist
-		:param debug:  show array of distance to every vertex (starting from 0 to V) 
+/*
+	Calculates distance from source to any other vertex
 
-		!!! if graph has negative cycle, algorithm print message !!! 
-	*/
-	void getDistance(int source, bool debug = false) {
-		int V = graph->V;
-		double cost[V];
-		int prev[V];
-		int maxCost = 99999;
+	:param source: source vertex from where calculate dist
+	:param debug:  show array of distance to every vertex (starting from 0 to V) 
 
-
-		for(int i = 0; i < V; i++) { 
-			cost[i] = maxCost;
-			prev[i] = -1;
-		}
-		cost[source] = 0;
+	!!! if graph has negative cycle, algorithm print message !!! 
+*/
+void getDistance(GraphClass *graph, int source, bool debug = false) {
+	int V = graph->getV();
+	double cost[V];
+	int prev[V];
+	int maxCost = 99999;
 
 
-		bool isChange = true;
-		for(int v = 0; v < V && isChange; v++) {
-			isChange = false;
-			for(int i = 0; i < V; i++) {
-				for(int j = 0; j < V; j++) {
-					if(graph->edge[i][j] != 0) {
-						if(cost[j] > cost[i] + graph->edge[i][j]) {
-							cost[j] = cost[i] + graph->edge[i][j];
-							prev[i] = j;
-							isChange = true;
-						}
-					}
-				}		
-			}
-		}
+	for(int i = 0; i < V; i++) { 
+		cost[i] = maxCost;
+		prev[i] = -1;
+	}
+	cost[source] = 0;
 
+
+	bool isChange = true;
+	for(int v = 0; v < V && isChange; v++) {
+		isChange = false;
 		for(int i = 0; i < V; i++) {
 			for(int j = 0; j < V; j++) {
-				if(graph->edge[i][j] != 0) {
-					if(cost[i] != maxCost && cost[i] + graph->edge[i][j] < cost[j]) {
-						cout << "Graph has negative cycle" << endl;
-						return;
+				if(graph->getEdge(i, j) != 0) {
+					if(cost[j] > cost[i] + graph->getEdge(i, j)) {
+						cost[j] = cost[i] + graph->getEdge(i, j);
+						prev[i] = j;
+						isChange = true;
 					}
+				}
+			}		
+		}
+	}
+
+	for(int i = 0; i < V; i++) {
+		for(int j = 0; j < V; j++) {
+			if(graph->getEdge(i, j) != 0) {
+				if(cost[i] != maxCost && cost[i] + graph->getEdge(i, j) < cost[j]) {
+					cout << "Graph has negative cycle" << endl;
+					return;
 				}
 			}
 		}
-
-		if(debug)
-			printArray(cost, V);
 	}
-};
+
+	if(debug)
+		printArray(cost, V);
+}
 
 /*
 	Creates randomized edges to graph
@@ -163,7 +166,7 @@ public:
 	:param V: number of graph Vertex
 	:param Density: density of graph edges
 */
-void getRandomGraph(BellmanFord* graph, int V, double Density) {
+void getRandomGraph(GraphClass* graph, int V, double Density) {
 	int source = 0;
 	int dest = 0;
 	double weight = 0;
@@ -205,10 +208,10 @@ void testAlgorithm() {
 			totalTime = 0;
 
 			for(int k = 0; k < numTests; k++) {
-				BellmanFord* graph = new BellmanFord(numVertex[i]);
+				GraphClass* graph = new GraphClass(numVertex[i]);
 				getRandomGraph(graph, numVertex[i], density[j]);
 				clock_t start = clock();
-				graph->getDistance(0);
+				getDistance(graph, 0);
 				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
 				if(minTime > duration)
 					minTime = duration;
@@ -240,7 +243,7 @@ void testAlgorithm() {
 istream& readGraph(istream& input) {
 	int V, E, source;
 	input >> V >> E >> source;
-	BellmanFord* graph = new BellmanFord(V);
+	GraphClass* graph = new GraphClass(V);
 
 	for(int i = 0; i < E; i++) {
 		int src, dst;
@@ -249,30 +252,30 @@ istream& readGraph(istream& input) {
 		graph->addDirectedEdge(src, dst, weight);
 	}
 
-	graph->getDistance(source, true);
+	getDistance(graph, source, true);
 	return input;
 }
 
 
 int main() {
 	srand(time(NULL));
-	minFile.open("min_2.txt");
-	maxFile.open("max_2.txt");
-	avgFile.open("avg_2.txt");
+	//minFile.open("min_2.txt");
+	//maxFile.open("max_2.txt");
+	//avgFile.open("avg_2.txt");
 
 	ifstream inputFile("input.txt");
 	//readGraph(cin);
 
-	testAlgorithm();
+	//testAlgorithm();
 	int V = 5;
 	
-	/*
-	BellmanFord graph(V);
+	
+	GraphClass graph(V);
 
 	graph.addEdge(0, 1, 1);
 	graph.addEdge(0, 2, 3);
 	//graph.addEdge(0, 3, -1);
-	graph.addDirectedEdge(0, 3, -3);
+	graph.addDirectedEdge(0, 3, -2);
 	graph.addEdge(1, 3, 1);
 	graph.addEdge(2, 3, 5);
 	graph.addEdge(2, 4, 1);
@@ -282,6 +285,6 @@ int main() {
 	graph.printEdges();
 	int source = 0;
 	cout << "Distance from " << source << " is: " << endl;
-	graph.getDistance(0, true);
-	*/	
+	getDistance(&graph, 0, true);
+	
 }
