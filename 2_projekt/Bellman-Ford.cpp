@@ -6,9 +6,10 @@
 
 using namespace std;
 
-ofstream minFile;
-ofstream maxFile;
-ofstream avgFile;
+
+ofstream minFile[2];
+ofstream maxFile[2];
+ofstream avgFile[2];
 
 struct Edge 
 { 
@@ -129,7 +130,7 @@ public:
 	inline Edge* getEdge(int i) { return &graph->edge[i]; }
 };
 
-void getDistance(GraphClass *graph, int source, bool debug = false) {
+void BellmanFord(GraphClass *graph, int source, bool debug = false) {
 	int V = graph->getV();
 	double cost[V];
 	int maxCost = 99999;
@@ -174,6 +175,45 @@ void getDistance(GraphClass *graph, int source, bool debug = false) {
 		printArray(cost, V);
 }
 
+void Dijkstra(GraphClass *graph, int source, bool debug = false) {
+	int V = graph->getV();
+	double cost[V];
+	bool visited[V];
+	int maxCost = 99999;
+
+
+	for(int i = 0; i < V; i++) { 
+		cost[i] = maxCost;
+		visited[i] = false;
+	}
+	cost[source] = 0;
+	visited[source] = true;
+
+	for(int i = 0; i < V; i++) {
+		double min = maxCost;
+		int index = 0;
+		for(int j = 0; j < V; j++) {
+			if(min > cost[j] && !visited[j]) {
+				min = cost[j];
+				index = j;
+			}
+		}
+
+		Edge* edge = graph->getEdge(index);
+		while(edge->dest != -1) {
+			if(edge->weight != 0) {
+				if(cost[index] + edge->weight < cost[edge->dest]) {
+					cost[edge->dest] = cost[index] + edge->weight;
+				}
+			}
+			edge = edge->next;
+		}
+		visited[index] = true;
+	}
+
+	if(debug)
+		printArray(cost, V);
+}
 
 void getRandomGraph(GraphClass* graph, int V, double Density) {
 	int source = 0;
@@ -214,36 +254,54 @@ void testAlgorithm() {
 	double density[] = {0.25, 0.5, 0.75, 1};
 	int numVertex[] = {10, 50, 100, 500, 1000};
 	int numTests = 100;
-	double minTime = 999;
-	double maxTime = 0;
+	double minTime[2] = {999, 999};
+	double maxTime[2] = {0, 0};
 	double duration;
-	double totalTime = 0;
+	double totalTime[2] = {0, 0};
 
-	for(int i = 4; i < sizeof(numVertex)/sizeof(numVertex[0]); i++) {
-		for(int j = 3; j < sizeof(density)/sizeof(density[0]); j++) {
-			minTime = 999;
-			maxTime = 0;
-			totalTime = 0;
+	for(int i = 0; i < sizeof(numVertex)/sizeof(numVertex[0]); i++) {
+		for(int j = 0; j < sizeof(density)/sizeof(density[0]); j++) {
+			for(int k = 0; k < 2; k++) {
+				minTime[k] = 999;
+				maxTime[k] = 0;
+				totalTime[k] = 0;
+			}
 
-			for(int k = 0; k < 10; k++) {
+			for(int k = 0; k < 100; k++) {
 				GraphClass* graph = new GraphClass(numVertex[i]);
-				clock_t start2 = clock();
 				getRandomGraph(graph, numVertex[i], density[j]);
-				cout << ((clock() - start2) / (double) CLOCKS_PER_SEC) << " " << numVertex[i] << endl;
+				
 				clock_t start = clock();
-				getDistance(graph, 0);
+				BellmanFord(graph, 0);
 				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
-				if(minTime > duration)
-					minTime = duration;
-				if(maxTime < duration)
-					maxTime = duration;
-				totalTime += duration;
+				if(minTime[0] > duration)
+					minTime[0] = duration;
+				if(maxTime[0] < duration)
+					maxTime[0] = duration;
+				totalTime[0] += duration;
+
+				start = clock();
+				Dijkstra(graph, 0);
+				duration = ((clock() - start) / (double) CLOCKS_PER_SEC);
+				if(minTime[1] > duration)
+					minTime[1] = duration;
+				if(maxTime[1] < duration)
+					maxTime[1] = duration;
+				totalTime[1] += duration;
+
 				delete graph;
 			}
-			double avgTime = totalTime / numTests;
-			cout << "AVG::Num vertex " << numVertex[i] << " density " << density[j] << ": " << avgTime << endl;
-			cout << "MIN::Num vertex " << numVertex[i] << " density " << density[j] << ": " << minTime << endl;
-			cout << "MAX::Num vertex " << numVertex[i] << " density " << density[j] << ": " << maxTime << endl;
+
+
+			double avgTime = totalTime[0] / numTests;
+			avgFile[0] << "AVG::Num vertex " << numVertex[i] << " density " << density[j] << ": " << avgTime << endl;
+			minFile[0] << "MIN::Num vertex " << numVertex[i] << " density " << density[j] << ": " << minTime[0] << endl;
+			maxFile[0] << "MAX::Num vertex " << numVertex[i] << " density " << density[j] << ": " << maxTime[0] << endl;
+
+			avgTime = totalTime[1] / numTests;
+			avgFile[1] << "AVG::Num vertex " << numVertex[i] << " density " << density[j] << ": " << avgTime << endl;
+			minFile[1] << "MIN::Num vertex " << numVertex[i] << " density " << density[j] << ": " << minTime[1] << endl;
+			maxFile[1] << "MAX::Num vertex " << numVertex[i] << " density " << density[j] << ": " << maxTime[1] << endl;
 		} 
 	}
 }
@@ -260,19 +318,23 @@ istream& readGraph(istream& input) {
 		graph->addDirectedEdge(src, dst, weight);
 	}
 
-	getDistance(graph, source, true);
+	BellmanFord(graph, source, true);
 	return input;
 }
 
 
 int main() {
 	srand(time(NULL));
-	//minFile.open("min_1.txt");
-	//maxFile.open("max_1.txt");
-	//avgFile.open("avg_1.txt");
+	minFile[0].open("min_1_BF.txt");
+	maxFile[0].open("max_1_BF.txt");
+	avgFile[0].open("avg_1_BF.txt");
+
+	minFile[1].open("min_1_DIJ.txt");
+	maxFile[1].open("max_1_DIJ.txt");
+	avgFile[1].open("avg_1_DIJ.txt");
 
 
-	//testAlgorithm();
+	testAlgorithm();
 	
 	int V = 5;
 	GraphClass graph(V);
@@ -286,6 +348,6 @@ int main() {
 	graph.printEdges();
 	int source = 0;
 	cout << "Distance from " << source << " is: " << endl;
-	getDistance(&graph, 0, true);
+	Dijkstra(&graph, 0, true);
 	
 }
