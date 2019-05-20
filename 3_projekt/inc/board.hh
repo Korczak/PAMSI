@@ -1,5 +1,5 @@
-#ifndef PLANSZA_HH
-#define PLANSZA_HH
+#ifndef BOARD_HH
+#define BOARD_HH
 
 #include <iostream>
 
@@ -10,22 +10,24 @@
 #define NORMAL_AI -1
 #define QUEEN_AI -2
 
+struct Move
+{
+    int x,y,dx,dy;
+    Move(int x, int y, int dx, int dy)
+    {
+        this.x=x;
+        this.y=y;
+        this.dx=dx;
+        this.dy=dy;
+    }
+};
+
 class Board
 {
     int board[8][8];
     int actualPlayer = PLAYER;
 public:
-    struct Move
-    {
-        int x,y,dx,dy;
-        Move(int x, int y, int dx, int dy)
-        {
-            this.x=x;
-            this.y=y;
-            this.dx=dx;
-            this.dy=dy;
-        }
-    };
+    
     Board(); //Creates an empty board
     Board(Board &p); //Creates copied board
     Board& operator=(Board const&); //Creates copied board
@@ -86,7 +88,7 @@ public:
     bool IsPositionCorrect(int x, int y);
     
     /*
-    *Makes a move on board
+    *Makes a move on board specified by move
     *
     *:param b: actual board
     *:param move: move by player or computer

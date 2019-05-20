@@ -1,4 +1,4 @@
-#include "Plansza.hh"
+#include "board.hh"
 
 using namespace std;
 
@@ -205,5 +205,5 @@ bool Board::IsEnd() {
 }
 
 Board[] Board::GetAllMoves() {
-
+    
 }
