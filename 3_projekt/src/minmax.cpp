@@ -23,4 +23,6 @@ int Minmax::CalculateScore(Board b, int player) {
 int Minmax::Min_Max(Board b, int depth, int player, Move& result) {
 	if(depth == 0)
 		return CalculateScore(b, player);
+
+	
 }

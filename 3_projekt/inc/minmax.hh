@@ -2,6 +2,7 @@
 #define MINMAX_HH
 
 #include <iostream>
+#include <vector>
 
 class Minmax
 {
