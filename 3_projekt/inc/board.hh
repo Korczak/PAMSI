@@ -2,6 +2,7 @@
 #define BOARD_HH
 
 #include <iostream>
+#include <vector>
 
 #define AI -1
 #define PLAYER 1
@@ -44,13 +45,15 @@ public:
     *:return: true if is correct, false if is incorrect
     */
     bool IsMovePossible(int x, int y, int dx, int dy); 
+    bool IsMovePossible(Move move); 
+
 
     /*
     *Get all possible moves from board
     *
-    *:return: array of possible boards
+    *:return: vector of possible boards
     */
-    Board[] GetAllMoves();
+    vector<Board> GetAllMoves();
 
 
     /*
@@ -114,5 +117,17 @@ public:
     *:return: Player move
     */
     Move PlayerMove(Board);
+
+    /*
+    *Move by player
+    *
+    *:param x: actual pos x
+    *:param y: actual pos y
+    *:param dx: destinated pos x
+    *:param dy: destinated pos y
+    *
+    *:return: Move created by parameters
+    */
+    Move CreateMove(int x, int y, int dx, int dy);
 };
 #endif

@@ -77,6 +77,8 @@ void Board::PrintBoard()
 
 
 bool Board::IsPlayerChecker(int x, int y) {
+    if(!(x >= 0 && x <= 7))
+        return false;
     if(actualPlayer == PLAYER && board[x][y] > 0)
         return true;
     if(actualPlayer == AI && board[x][y] < 0)
@@ -95,6 +97,10 @@ bool Board::IsPositionCorrect(int x, int y) {
         return true;
     return false;
 }
+
+bool Board::IsMovePossible(Move move) {
+    IsMovePossible(move.x, move.y, move.dx, move.dy);
+} 
 
 bool Board::IsMovePossible(int x, int y, int dx, int dy) {
     if(!IsPlayerChecker(x, y)) //if checker belongs to player
@@ -124,6 +130,7 @@ bool Board::IsMovePossible(int x, int y, int dx, int dy) {
     if(IsEmpty(dx, dy)) //without enemy checker move is possible
         return true;
 
+    //BEAT ENEMY CHECKER
     if(IsPlayerChecker(dx, dy)) //trying to go in player checker
         return false;
     
@@ -204,6 +211,66 @@ bool Board::IsEnd() {
     return false;
 }
 
-Board[] Board::GetAllMoves() {
-    
+vector<Board> Board::GetAllMoves() {
+    vector < Board > boards;
+
+    Move newMove;
+    for(int x = 0; x < 8; x++) {
+        for(int y = 0; y < 8; y++) {            
+            if(IsMovePossible(x, y, x+1, y+1)) {
+                newMove = CreateMove(x, y, x+1, y+1);
+                boards.push_back(board.MakeMove(board, newMove));   
+            }
+            if(IsMovePossible(x, y, x-1, y+1)) {
+                newMove = CreateMove(x, y, x-1, y+1);
+                boards.push_back(board.MakeMove(board, newMove));   
+            }
+            if(IsMovePossible(x, y, x+1, y-1)) {
+                newMove = CreateMove(x, y, x+1, y-1);
+                boards.push_back(board.MakeMove(board, newMove));   
+            }
+            if(IsMovePossible(x, y, x-1, y-1)) {
+                newMove = CreateMove(x, y, x-1, y-1);
+                boards.push_back(board.MakeMove(board, newMove));   
+            }
+        }
+    }
 }
+
+Move Board::CreateMove(int x, int y, int dx, int dy) {
+    return Move(x, y, dx, dy);
+}
+
+Board Board::MakeMove(const Board b, Move move) {
+    Board newBoard(b);
+    if(!IsMovePossible(move))
+        return null;
+
+    int actualChecker = b.board[move.x][move.y];
+    newBoard.board[move.x][move.y] = 0;
+    newBoard.board[move.dx][move.dy] = actualChecker;
+
+    return newBoard;
+}
+
+Move Board::PlayerMove(Board b) {
+    std::cout << "Podaj wspolrzedne pionka: wiersz kolumna (np. 3 3 ), ktory chcesz ruszyc: "  << std::endl;
+    int x, y, dx, dy;  
+
+
+    do {
+        std::cin >> x >> y;
+    } while(!IsPlayerChecker(x, y));
+
+    std::cout << "Podaj gdzie chcesz sie ruszyc"  << std::endl;
+    
+    do {
+        std::cin >> dx >> dy;
+    } while(!IsMovePossible(x, y, dx, dy));
+
+
+
+}
+
+
+
