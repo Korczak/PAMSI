@@ -251,6 +251,10 @@ vector<Move> Board::GetAllMoves() {
     return moves;
 }
 
+vector<Move> Board::GetAllMoves(Move move) {
+    GetAllMoves(move.x, move.y);
+}
+
 vector<Move> Board::GetAllMoves(int x, int y) {
     vector < Move > moves;
     
@@ -287,6 +291,83 @@ void Board::ChangePlayer() {
         actualPlayer = AI;
     else
         actualPlayer = PLAYER;
+}
+
+void Board::JumpOverChecker(Move& move) {
+    JumpOverChecker(move.x, move.y, move.dx, move.dy);
+}
+
+void Board::JumpOverChecker(int x, int y, int& dx, int& dy) {
+    if(!IsEmpty(dx, dy)) {
+        if(IsAttackingEnemyChecker(x, y, dx, dy)) { //make 'jump' over checker
+            isAttackingEnemy = true;
+
+            if(dy > y)
+                dy += 1;
+            else 
+                dy -= 1;
+
+            if(dx > x)
+                dx += 1;
+            else
+                dx -= 1;
+
+            this->board[(x+dx)/2][(y+dy)/2] = 0; //erase attacked checker
+        }
+    }
+}
+
+vector<Board> Board::GetAllBoards() {
+    vector<Board> boards;
+    vector<Move> moves;
+
+    moves = GetAllMoves();
+
+    Board newBoard;
+    bool isAttackingEnemy = false;
+
+    for(auto &move : moves) {
+        newBoard = MakeMove(move);
+
+        if(newBoard.IsAttackingEnemyChecker(move))
+            isAttackingEnemy = true;
+
+
+        vector<Move> newMoves;
+        newMoves = newBoard.GetAllMoves(move);
+
+        newBoard.GetAllAtackerBoard(newMoves, boards);
+    }
+
+    return boards;
+}
+
+void Board::GetAllAtackerBoard(vector<Move> moves, vector<Board>& boards) {
+    vector<Board> newBoards;
+    Board newBoard = *this; 
+
+    for(auto &move : moves) {
+        vector<Move> newMoves;
+        newBoard.JumpOverChecker(move);
+
+        newMoves = newBoard.GetAllMoves(move);
+
+        for(auto &move : newMoves) {
+            attackerMoves.push_back(move);
+
+            if(newBoard.IsAttackingEnemyChecker(move))
+                newBoard.GetAllAtackerBoard(moves, boards);
+        }
+
+        boards.push_back(newBoard);
+    }
+}
+
+Move Board::AIMove() {
+    
+    
+
+
 }
 
 Move Board::PlayerMove() {
@@ -327,23 +408,7 @@ Move Board::PlayerMove() {
         cin >> dx >> dy;
     } while(!IsMovePossible(x, y, dx, dy));
 
-    if(!IsEmpty(dx, dy)) {
-        if(IsAttackingEnemyChecker(x, y, dx, dy)) { //make 'jump' over checker
-            isAttackingEnemy = true;
-
-            if(dy > y)
-                dy += 1;
-            else 
-                dy -= 1;
-
-            if(dx > x)
-                dx += 1;
-            else
-                dx -= 1;
-
-            this->board[(x+dx)/2][(y+dy)/2] = 0; //erase attacked checker
-        }
-    }
+    JumpOverChecker(x, y, dx, dy);
 
     *this = MakeMove(CreateMove(x, y, dx, dy)); //make move
     
@@ -378,18 +443,8 @@ Move Board::PlayerMove() {
             dx = possibleMoves[index].dx;
             dy = possibleMoves[index].dy;
 
-            if(IsAttackingEnemyChecker(x, y, dx, dy)) { //make 'jump' over checker
-                if(dy > y)
-                    dy += 1;
-                else 
-                    dy -= 1;
+            JumpOverChecker(x, y, dx, dy);
 
-                if(dx > x)
-                    dx += 1;
-                else
-                    dx -= 1;
-            }
-            this->board[(x+dx)/2][(y+dy)/2] = 0; //erase attacked checker
             *this = MakeMove(CreateMove(x, y, dx, dy)); 
         }
     }

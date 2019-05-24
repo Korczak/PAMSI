@@ -157,6 +157,11 @@ public:
     Move CreateMove(int x, int y, int dx, int dy);
 
     /*
+    *Jump over checker (moves and deletes enenemy checker)
+    */
+    void JumpOverChecker(int x, int y, int& dx, int& dy);
+
+    /*
     *Update actual player
     */
     void ChangePlayer();
