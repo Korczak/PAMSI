@@ -1,15 +1,14 @@
-#include "../inc/board.hh"
 #include<iostream>
-#include<cstdio>
-#include<cmath>
-#include<cstdlib>
-#include <vector>
+#include "board.hh"
 
 using namespace std;
 
 int main() {
-	Board board();
+	Board board;
 	board.PrintBoard();
-	system("Pause");
+	while(!board.IsEnd()) {
+		board.PlayerMove();
+		board.PrintBoard();
+	}
 	return 0;
 }

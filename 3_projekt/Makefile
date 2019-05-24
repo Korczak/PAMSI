@@ -1,14 +1,16 @@
-CC = g++ -std=c++11 
+CC = g++ -Iinc -std=c++11
 
-all: main.o board.o
-	$(CC) main.o board.o -o a.out
-	./a.out
+__start__: prog
+	./obj/prog.out
 
-main.o: main.cpp board.o:
-	$(CC) main.cpp -c -o main.o
+prog: obj/main.o obj/board.o
+	$(CC) obj/main.o obj/board.o -o obj/prog.out
 
-board.o: board.cpp board.hh minmax.o:
-	$(CC) board.cpp -c -o board.o
+obj/main.o: src/main.cpp inc/board.hh
+	$(CC) -c -o obj/main.o src/main.cpp 
 
-minmax.o: minmax.cpp minmax.hh:
-	$(CC) minmax.cpp -c -o minmax.o
+obj/board.o: src/board.cpp inc/board.hh
+	$(CC) -c -o obj/board.o src/board.cpp
+
+clean:
+	rm -r obj/*.o

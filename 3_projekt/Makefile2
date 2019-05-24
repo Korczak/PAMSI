@@ -1,0 +1,19 @@
+CC = g++ -std=c++11 
+
+__start__: prog
+	./prog.out
+
+prog: obj/main.o obj/board.o obj/minimax.o
+	$(CC) obj/main.o obj/board.o obj/minimax.o -o obj/prog.out
+
+obj/main.o: src/main.cpp inc/board.hh inc/minmax.hh:
+	$(CC) src/main.cpp -c -o obj/main.o
+
+obj/board.o: src/board.cpp inc/board.hh inc/minmax.hh:
+	$(CC) src/board.cpp -c -o obj/board.o
+
+obj/minmax.o: src/minmax.cpp inc/minmax.hh:
+	$(CC) src/minmax.cpp -c -o obj/minmax.o
+
+clean:
+	rm -r obj/*.o

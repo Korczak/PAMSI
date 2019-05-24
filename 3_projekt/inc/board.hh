@@ -14,12 +14,22 @@
 struct Move
 {
     int x,y,dx,dy;
+    Move() : x(0), y(0), dx(0), dy(0) {}
     Move(int x, int y, int dx, int dy)
     {
-        this.x=x;
-        this.y=y;
-        this.dx=dx;
-        this.dy=dy;
+        this->x=x;
+        this->y=y;
+        this->dx=dx;
+        this->dy=dy;
+    }
+    Move& operator=(const Move &move) {
+        this->x = move.x;
+        this->y = move.y;
+        this->dx = move.dx;
+        this->dy = move.dy;
+    }
+    void printMove() {
+        std::cout << "from: " << x << " " << y << " to: " << dx << " " << dy << std::endl;
     }
 };
 
@@ -30,10 +40,22 @@ class Board
 public:
     
     Board(); //Creates an empty board
-    Board(Board &p); //Creates copied board
-    Board& operator=(Board const&); //Creates copied board
+    Board(const Board &p); //Creates copied board
+    Board& operator=(const Board &); //Creates copied board
     void PrintBoard(); //Prints board
     
+    /*
+    *Check if move is attacking enemy
+    *
+    *:param x: actual x
+    *:param y: actual y
+    *:param dx: new x
+    *:param dy: new y
+    *   
+    *:return: true if is attacking, false otherwise
+    */
+    bool IsAttackingEnemyChecker(int x, int y, int dx, int dy);
+    bool IsAttackingEnemyChecker(Move move);
     /*
     *Check if move is correct
     *
@@ -49,12 +71,18 @@ public:
 
 
     /*
-    *Get all possible moves from board
+    *Get all possible moves on board
     *
-    *:return: vector of possible boards
+    *:return: vector of possible moves
     */
-    vector<Board> GetAllMoves();
+    std::vector<Move> GetAllMoves();
 
+    /*
+    *Get all possible moves on board from specific position
+    *
+    *:return: vector of possible moves
+    */
+    std::vector<Move> GetAllMoves(int x, int y);
 
     /*
     *Check if cell is empty
@@ -92,13 +120,13 @@ public:
     
     /*
     *Makes a move on board specified by move
-    *
-    *:param b: actual board
+    *!!! Move has to be correct !!!
+    * 
     *:param move: move by player or computer
     *   
     *:return: board after move
     */
-    Board MakeMove(const Board b, Move move);
+    Board MakeMove(Move move);
     
     /*
     *Choose move that ai will make
@@ -112,11 +140,9 @@ public:
     /*
     *Move by player
     *
-    *:param b: actual board
-    *
     *:return: Player move
     */
-    Move PlayerMove(Board);
+    Move PlayerMove();
 
     /*
     *Move by player
@@ -129,5 +155,10 @@ public:
     *:return: Move created by parameters
     */
     Move CreateMove(int x, int y, int dx, int dy);
+
+    /*
+    *Update actual player
+    */
+    void ChangePlayer();
 };
 #endif
