@@ -8,7 +8,7 @@ int main() {
 	board.PrintBoard();
 	while(!board.IsEnd()) {
 		board.PlayerMove();
-		board.AiMove(3);
+		board.AiMove(5);
 		board.PrintBoard();
 	}
 	return 0;

@@ -207,7 +207,6 @@ bool Board::IsMovePossible(int x, int y, int dx, int dy) {
     if(!isMoveCorrectlyCreated)
         return false;
 
-
     if(IsEmpty(dx, dy)) //without enemy checker move is possible
         return true;
 
@@ -296,6 +295,10 @@ void Board::ChangePlayer() {
         actualPlayer = PLAYER;
 }
 
+void Board::ChangePlayer(int player) {
+    actualPlayer = player;
+}
+
 void Board::JumpOverChecker(Move& move) {
     JumpOverChecker(move.x, move.y, move.dx, move.dy);
 }
@@ -334,12 +337,13 @@ void Board::GetAllBoards(vector< Board >& boards, vector< vector< Move > >& resu
         prevMoves.push_back(move);
 
         if(newBoard.IsAttackingEnemyChecker(move)) {
-            move.printMove();
-            newBoard.PrintBoard();
+            //move.printMove();
+            //newBoard.PrintBoard();
             newBoard.GetAllAtackerBoard(prevMoves, move, boards, result);
         }
         else {    
             newBoard = MakeMove(move);
+            //newBoard.ChangePlayer();
             boards.push_back(newBoard);
             result.push_back(prevMoves);
         }
@@ -355,15 +359,15 @@ void Board::GetAllAtackerBoard(vector< Move > prevMoves, Move prevMove, vector< 
     }
     *this = MakeMove(prevMove);
     newMoves = GetAllMoves();
-    PrintBoard();
 
     for(auto newMove : newMoves) {
-        newMove.printMove();
+        //newMove.printMove();
         if(IsAttackingEnemyChecker(newMove)) {
             prevMoves.push_back(prevMove);
             GetAllAtackerBoard(prevMoves, newMove, boards, result);
         }
     }
+    //(*this).ChangePlayer();
     boards.push_back(*this);
     result.push_back(prevMoves);
 }
@@ -372,13 +376,14 @@ void Board::AiMove(int maxDepth = 3) {
     vector<Move> bestMoves;
 
     Minmax minmax;
-    minmax.Min_Max(*this, maxDepth, AI, bestMoves);
-
+    minmax.Min_Max(*this, maxDepth, maxDepth, AI, bestMoves);
+    PrintBoard();
     for(auto move : bestMoves) {
+        move.printMove();
         if(IsAttackingEnemyChecker(move))
             JumpOverChecker(move);
         
-        move.printMove();
+        //move.printMove();
         *this = MakeMove(move);
     }
 

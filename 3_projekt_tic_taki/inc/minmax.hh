@@ -27,14 +27,13 @@ public:
 	*	Recognize the best possible move for player, works on min_max algorithm
 	*
 	*:param b: board
-	*:param maxDepth: starting depth
 	*:param depth: depth of minmax - last is 0
 	*:param player: player id, depends whos move is currently
 	*:param result: the best vector of moves for ai 
 	*
 	*:return: score of best possible move
 	*/
-	int Min_Max(Board b, int depth, int maxDepth, int player, std::vector<Move>& result);
+	int Min_Max(Board b, int depth, int player, std::vector<Move>& result);
 };
 
 

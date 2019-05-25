@@ -164,6 +164,7 @@ public:
     *Update actual player
     */
     void ChangePlayer();
+    void ChangePlayer(int player);
 
     /*
     *Get all atacker boards, pushes new boards to vector of boards
