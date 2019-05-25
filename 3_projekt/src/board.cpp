@@ -1,4 +1,5 @@
 #include "board.hh"
+#include "minmax.hh"
 
 using namespace std;
 
@@ -53,6 +54,8 @@ Board& Board::operator=(const Board &b)
 void Board::PrintBoard()
 {
     int row_num[8]= {0,1,2,3,4,5,6,7};
+    char row_name[8] = {'K', 'O', 'L', 'U', 'M', 'N', 'Y', ' '};
+    cout<<endl<<"                      WIERSZE                         ";
     cout<<endl<<"    0      1      2      3      4      5      6      7"<<endl;
     for(int i=0; i<8; i++)
     {
@@ -70,7 +73,7 @@ void Board::PrintBoard()
             if(board[i][j]==2)
                 cout<<" [Q_W] ";
         }
-        cout<<row_num[i]<<endl;
+        cout<<row_num[i] << "  " << row_name[i]<<endl;
     }
     cout<<"    0      1      2      3      4      5      6      7"<<endl;
 }
@@ -108,7 +111,7 @@ bool Board::IsAttackingEnemyChecker(Move move) {
 }
 bool Board::IsAttackingEnemyChecker(int x, int y, int dx, int dy) {
     //BEAT ENEMY CHECKER
-    if(IsPlayerChecker(dx, dy)) //trying to go in player checker
+    if(IsPlayerChecker(dx, dy) || board[dx][dy] == 0) //trying to go in player checker
         return false;
 
     if(!IsPlayerChecker(dx, dy)) { //attacking enemy checker
@@ -138,18 +141,17 @@ bool Board::IsAttackingEnemyChecker(int x, int y, int dx, int dy) {
                     return true;
             }
         }
-
         if(actualPlayer == PLAYER) {
             if(dy > y) { //move towards right side
-                if(!IsPositionCorrect(dx + 1, dy + 1)) //outside of the board
+                if(!IsPositionCorrect(dx - 1, dy + 1)) //outside of the board
                     return false;
-                if(IsEmpty(dx + 1, dy + 1))
+                if(IsEmpty(dx - 1, dy + 1))
                     return true;
             }
             else if(dy < y) {// move towards left side
-                if(!IsPositionCorrect(dx + 1, dy - 1))
+                if(!IsPositionCorrect(dx - 1, dy - 1))
                     return false;
-                if(IsEmpty(dx + 1, dy - 1))
+                if(IsEmpty(dx - 1, dy - 1))
                     return true;
             }
         }
@@ -205,6 +207,7 @@ bool Board::IsMovePossible(int x, int y, int dx, int dy) {
     if(!isMoveCorrectlyCreated)
         return false;
 
+
     if(IsEmpty(dx, dy)) //without enemy checker move is possible
         return true;
 
@@ -252,7 +255,7 @@ vector<Move> Board::GetAllMoves() {
 }
 
 vector<Move> Board::GetAllMoves(Move move) {
-    GetAllMoves(move.x, move.y);
+    return GetAllMoves(move.x, move.y);
 }
 
 vector<Move> Board::GetAllMoves(int x, int y) {
@@ -300,8 +303,6 @@ void Board::JumpOverChecker(Move& move) {
 void Board::JumpOverChecker(int x, int y, int& dx, int& dy) {
     if(!IsEmpty(dx, dy)) {
         if(IsAttackingEnemyChecker(x, y, dx, dy)) { //make 'jump' over checker
-            isAttackingEnemy = true;
-
             if(dy > y)
                 dy += 1;
             else 
@@ -311,66 +312,81 @@ void Board::JumpOverChecker(int x, int y, int& dx, int& dy) {
                 dx += 1;
             else
                 dx -= 1;
-
             this->board[(x+dx)/2][(y+dy)/2] = 0; //erase attacked checker
         }
     }
 }
 
-vector<Board> Board::GetAllBoards() {
-    vector<Board> boards;
+void Board::GetAllBoards(vector< Board >& boards, vector< vector< Move > >& result) {
     vector<Move> moves;
+    vector<Move> prevMoves;
+    vector<Move> newMoves;
 
-    moves = GetAllMoves();
 
     Board newBoard;
-    bool isAttackingEnemy = false;
+    newBoard = (*this);
+    moves = newBoard.GetAllMoves();
+    
+    for(auto move : moves) {
+        newBoard = (*this);
+        prevMoves.clear();
+        newMoves.clear();
+        prevMoves.push_back(move);
 
-    for(auto &move : moves) {
-        newBoard = MakeMove(move);
-
-        if(newBoard.IsAttackingEnemyChecker(move))
-            isAttackingEnemy = true;
-
-
-        vector<Move> newMoves;
-        newMoves = newBoard.GetAllMoves(move);
-
-        newBoard.GetAllAtackerBoard(newMoves, boards);
-    }
-
-    return boards;
-}
-
-void Board::GetAllAtackerBoard(vector<Move> moves, vector<Board>& boards) {
-    vector<Board> newBoards;
-    Board newBoard = *this; 
-
-    for(auto &move : moves) {
-        vector<Move> newMoves;
-        newBoard.JumpOverChecker(move);
-
-        newMoves = newBoard.GetAllMoves(move);
-
-        for(auto &move : newMoves) {
-            attackerMoves.push_back(move);
-
-            if(newBoard.IsAttackingEnemyChecker(move))
-                newBoard.GetAllAtackerBoard(moves, boards);
+        if(newBoard.IsAttackingEnemyChecker(move)) {
+            move.printMove();
+            newBoard.PrintBoard();
+            newBoard.GetAllAtackerBoard(prevMoves, move, boards, result);
         }
-
-        boards.push_back(newBoard);
+        else {    
+            newBoard = MakeMove(move);
+            boards.push_back(newBoard);
+            result.push_back(prevMoves);
+        }
     }
 }
 
-Move Board::AIMove() {
-    
-    
 
+
+void Board::GetAllAtackerBoard(vector< Move > prevMoves, Move prevMove, vector< Board > &boards, vector< vector< Move > > &result) {
+    vector<Move> newMoves;
+    if(IsAttackingEnemyChecker(prevMove)) {
+        JumpOverChecker(prevMove);
+    }
+    *this = MakeMove(prevMove);
+    newMoves = GetAllMoves();
+    PrintBoard();
+
+    for(auto newMove : newMoves) {
+        newMove.printMove();
+        if(IsAttackingEnemyChecker(newMove)) {
+            prevMoves.push_back(prevMove);
+            GetAllAtackerBoard(prevMoves, newMove, boards, result);
+        }
+    }
+    boards.push_back(*this);
+    result.push_back(prevMoves);
+}
+
+void Board::AiMove(int maxDepth = 3) {
+    vector<Move> bestMoves;
+
+    Minmax minmax;
+    minmax.Min_Max(*this, maxDepth, AI, bestMoves);
+
+    for(auto move : bestMoves) {
+        if(IsAttackingEnemyChecker(move))
+            JumpOverChecker(move);
+        
+        move.printMove();
+        *this = MakeMove(move);
+    }
+
+    ChangePlayer();
 
 }
 
-Move Board::PlayerMove() {
+void Board::PlayerMove() {
     int x, y, dx, dy;  
 
     bool isPossibleMove = false;
@@ -408,7 +424,8 @@ Move Board::PlayerMove() {
         cin >> dx >> dy;
     } while(!IsMovePossible(x, y, dx, dy));
 
-    JumpOverChecker(x, y, dx, dy);
+    if(!IsEmpty(dx, dy))
+        JumpOverChecker(x, y, dx, dy);
 
     *this = MakeMove(CreateMove(x, y, dx, dy)); //make move
     
@@ -442,8 +459,8 @@ Move Board::PlayerMove() {
 
             dx = possibleMoves[index].dx;
             dy = possibleMoves[index].dy;
-
-            JumpOverChecker(x, y, dx, dy);
+            if(!IsEmpty(dx, dy))
+                JumpOverChecker(x, y, dx, dy);
 
             *this = MakeMove(CreateMove(x, y, dx, dy)); 
         }

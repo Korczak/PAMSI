@@ -35,9 +35,9 @@ struct Move
 
 class Board
 {
+public:
     int board[8][8];
     int actualPlayer = PLAYER;
-public:
     
     Board(); //Creates an empty board
     Board(const Board &p); //Creates copied board
@@ -83,6 +83,7 @@ public:
     *:return: vector of possible moves
     */
     std::vector<Move> GetAllMoves(int x, int y);
+    std::vector<Move> GetAllMoves(Move move);
 
     /*
     *Check if cell is empty
@@ -129,20 +130,16 @@ public:
     Board MakeMove(Move move);
     
     /*
-    *Choose move that ai will make
+    *Choose move that ai will make, , updates board
     *
-    *:param b: actual board
-    *
-    *:return: AI move
+    *:param maxDepth: max depth of minimax tree - higher means AI is looking further
     */
-    Move AiMove(Board b);
+    void AiMove(int maxDepth);
     
     /*
-    *Move by player
-    *
-    *:return: Player move
+    *Move by player, updates board
     */
-    Move PlayerMove();
+    void PlayerMove();
 
     /*
     *Move by player
@@ -160,10 +157,32 @@ public:
     *Jump over checker (moves and deletes enenemy checker)
     */
     void JumpOverChecker(int x, int y, int& dx, int& dy);
+    void JumpOverChecker(Move& move);
+
 
     /*
     *Update actual player
     */
     void ChangePlayer();
+
+    /*
+    *Get all atacker boards, pushes new boards to vector of boards
+    *
+    *:param prevMoves: all previous moves from the beggining of turn
+    *:param prevMove: previous move
+    *:param boards: vector of all boards
+    *:param result: moves that corresponds to board
+    */
+    void GetAllAtackerBoard(std::vector<Move> prevMoves, Move prevMove, 
+                            std::vector<Board>& boards, std::vector<std::vector<Move>>& result);
+
+    /*
+    *Get all boards (including after attack and only move)
+    *
+    *:param boards: all boards that are possible from actual board
+    *:param result: all moves to achieve specific board status
+    */
+    void GetAllBoards(std::vector<Board>& boards, std::vector<std::vector<Move>>& result);
+
 };
 #endif
