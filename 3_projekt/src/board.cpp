@@ -106,9 +106,19 @@ bool Board::IsMovePossible(Move move) {
     IsMovePossible(move.x, move.y, move.dx, move.dy);
 } 
 
+void Board::ChangeToQueen() {
+    for(int y = 0; y < 8; y++) {
+        if(board[0][y] == NORMAL_PLAYER)
+            board[0][y] = QUEEN_PLAYER;
+        if(board[7][y] == NORMAL_AI)
+            board[7][y] = QUEEN_AI;
+    }
+}
+
 bool Board::IsAttackingEnemyChecker(Move move) {
     return IsAttackingEnemyChecker(move.x, move.y, move.dx, move.dy);
 }
+
 bool Board::IsAttackingEnemyChecker(int x, int y, int dx, int dy) {
     //BEAT ENEMY CHECKER
     if(IsPlayerChecker(dx, dy) || board[dx][dy] == 0) //trying to go in player checker
@@ -289,6 +299,8 @@ Board Board::MakeMove(Move move) {
 }
 
 void Board::ChangePlayer() {
+    ChangeToQueen();
+    
     if(actualPlayer == PLAYER)
         actualPlayer = AI;
     else

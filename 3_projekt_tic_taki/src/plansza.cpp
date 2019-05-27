@@ -92,28 +92,14 @@ bool Plansza::CzyZajetePole(int x, int y) {
     return true;
 }
 
-void Plansza::DodajIlosc(int iloscElem, int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5) {
-    switch(iloscElem) {
-        case 1:
-            ilosc1++;
-            break;
-        case 2:
-            ilosc2++;
-            break;
-        case 3:
-            ilosc3++;
-            break;
-        case 4:
-            ilosc4++;
-            break;
-        case 5:
-            ilosc5++;
-            break;
-    }
+void Plansza::DodajIlosc(int iloscElem, int ilosc[]) {
+    if(iloscElem == 0)
+        return;
+    ilosc[iloscElem - 1]++;
 }
 
 void Plansza::SprawdzanieElementow(int gracz, int x, int y, int &iloscElem, 
-                                    int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5,
+                                    int ilosc[],
                                     bool otwartyPoczatek, bool sprawdzOtwarte, bool sprawdzOtwarteZ2Stron) {
     if(gracz == GRACZ) {
         if(plansza[x][y] == 1) {
@@ -121,7 +107,7 @@ void Plansza::SprawdzanieElementow(int gracz, int x, int y, int &iloscElem,
         }
         else {
             if((otwartyPoczatek || !sprawdzOtwarte) && !sprawdzOtwarteZ2Stron) {
-                DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+                DodajIlosc(iloscElem, ilosc);
             }
             iloscElem = 0;
         }
@@ -132,27 +118,27 @@ void Plansza::SprawdzanieElementow(int gracz, int x, int y, int &iloscElem,
         }
         else {
             if((otwartyPoczatek || !sprawdzOtwarte) && !sprawdzOtwarteZ2Stron) {
-                DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+                DodajIlosc(iloscElem, ilosc);
             }
             iloscElem = 0;
         }
     }
 }
 
-void Plansza::SprawdzPoziomy(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5, int poziom, 
+void Plansza::SprawdzPoziomy(int ilosc[], int poziom, 
                              int gracz, bool sprawdzOtwarte = false, bool sprawdzOtwarteZ2Stron = false) { //z obu stron jest puste
     bool otwartyPoczatek = false;
     int iloscElem = 0;
     for(int i = 0; i < WIELKOSC_PLANSZY; i++) {
         if(plansza[poziom][i] == 0) {
             otwartyPoczatek = true;
-            DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+            DodajIlosc(iloscElem, ilosc);
             iloscElem = 0;
         }
         else {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron || !sprawdzOtwarte) {
                 
-                SprawdzanieElementow(gracz, poziom, i, iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5,
+                SprawdzanieElementow(gracz, poziom, i, iloscElem, ilosc,
                                         otwartyPoczatek, sprawdzOtwarte, sprawdzOtwarteZ2Stron);
                 
             }
@@ -160,35 +146,35 @@ void Plansza::SprawdzPoziomy(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, 
     }
 
     if(otwartyPoczatek || !sprawdzOtwarte)
-        DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+        DodajIlosc(iloscElem, ilosc);
 }
 
 
 
-void Plansza::SprawdzPiony(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5, int pion, 
+void Plansza::SprawdzPiony(int ilosc[], int pion, 
                            int gracz, bool sprawdzOtwarte = false, bool sprawdzOtwarteZ2Stron = false) { //z obu stron jest puste
     bool otwartyPoczatek = false;
     int iloscElem = 0;
     for(int i = 0; i < WIELKOSC_PLANSZY; i++) {
         if(plansza[i][pion] == 0) {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron)
-                DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+                DodajIlosc(iloscElem, ilosc);
             otwartyPoczatek = true;
             iloscElem = 0;
         }
         else {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron || !sprawdzOtwarte) {
-                SprawdzanieElementow(gracz, i, pion, iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5,
+                SprawdzanieElementow(gracz, i, pion, iloscElem, ilosc,
                                         otwartyPoczatek, sprawdzOtwarte, sprawdzOtwarteZ2Stron);                
             }
         }
     }
 
     if((otwartyPoczatek || !sprawdzOtwarte) && !sprawdzOtwarteZ2Stron)
-        DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+        DodajIlosc(iloscElem, ilosc);
 }
 
-void Plansza::SprawdzSkosyPrawe(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5, int skos, 
+void Plansza::SprawdzSkosyPrawe(int ilosc[], int skos, 
                            int gracz, bool sprawdzOtwarte = false, bool sprawdzOtwarteZ2Stron = false) { //z obu stron jest puste
     bool otwartyPoczatek = false;
     int iloscElem = 0;
@@ -198,26 +184,25 @@ void Plansza::SprawdzSkosyPrawe(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc
 
         if(plansza[skos - i][i] == 0) {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron)
-                DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+                DodajIlosc(iloscElem, ilosc);
             iloscElem = 0;
             otwartyPoczatek = true;
         }
         else {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron || !sprawdzOtwarte) {
-                
-                SprawdzanieElementow(gracz, skos - i, i, iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5,
+                SprawdzanieElementow(gracz, skos - i, i, iloscElem, ilosc,
                                         otwartyPoczatek, sprawdzOtwarte, sprawdzOtwarteZ2Stron);
-                
             }
         }
     }
 
     if((otwartyPoczatek || !sprawdzOtwarte) && !sprawdzOtwarteZ2Stron)
-        DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+        DodajIlosc(iloscElem, ilosc);
 }
 
-void Plansza::SprawdzSkosyLewe(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4, int& ilosc5, int skos, 
+void Plansza::SprawdzSkosyLewe(int ilosc[], int skos, 
                            int gracz, bool sprawdzOtwarte = false, bool sprawdzOtwarteZ2Stron = false) { //z obu stron jest puste
+
     bool otwartyPoczatek = false;
     int iloscElem = 0;
     for(int i = 0; i < WIELKOSC_PLANSZY; i++) {
@@ -226,14 +211,14 @@ void Plansza::SprawdzSkosyLewe(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4
 
         if(plansza[skos + i][i] == 0) {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron)
-                DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+                DodajIlosc(iloscElem, ilosc);
             iloscElem = 0;
             otwartyPoczatek = true;
         }
         else {
             if(otwartyPoczatek || !sprawdzOtwarteZ2Stron || !sprawdzOtwarte) {
                 
-                SprawdzanieElementow(gracz, skos + i, i, iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5,
+                SprawdzanieElementow(gracz, skos + i, i, iloscElem, ilosc,
                                         otwartyPoczatek, sprawdzOtwarte, sprawdzOtwarteZ2Stron);
                 
             }
@@ -241,7 +226,7 @@ void Plansza::SprawdzSkosyLewe(int& ilosc1, int& ilosc2, int& ilosc3, int&ilosc4
     }
 
     if((otwartyPoczatek || !sprawdzOtwarte) && !sprawdzOtwarteZ2Stron)
-        DodajIlosc(iloscElem, ilosc1, ilosc2, ilosc3, ilosc4, ilosc5);
+        DodajIlosc(iloscElem, ilosc);
 }
 
 bool Plansza::CzyKoniec() {
@@ -257,18 +242,20 @@ bool Plansza::CzyKoniec() {
 }
 
 bool Plansza::CzyKoniec(int gracz) {
-    int ilosc1, ilosc2 = 0, ilosc3 = 0, ilosc4 = 0, ilosc5 = 0;
+    int ilosc[ILOSC_W_RZEDZIE];
 
+    for(int i = 0; i < ILOSC_W_RZEDZIE; i++)
+        ilosc[i] = 0;
     for(int i = -WIELKOSC_PLANSZY + 1; i < WIELKOSC_PLANSZY; i++)
-        SprawdzSkosyLewe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, gracz);
+        SprawdzSkosyLewe(ilosc, i, gracz);
     for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY - 1; i++)
-        SprawdzSkosyPrawe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, gracz);
+        SprawdzSkosyPrawe(ilosc, i, gracz);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        SprawdzPiony(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, gracz);
+        SprawdzPiony(ilosc, i, gracz);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        SprawdzPoziomy(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, gracz);
+        SprawdzPoziomy(ilosc, i, gracz);
     
-    if(ilosc5 > 0)
+    if(ilosc[ILOSC_W_RZEDZIE - 1] > 0)
         return true;
     return false;
     
@@ -276,32 +263,42 @@ bool Plansza::CzyKoniec(int gracz) {
 
 int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
     int wartosc = 0;
-    int ilosc1 = 0, ilosc2 = 0, ilosc3 = 0, ilosc4 = 0, ilosc5 = 0;
+    int ilosc[ILOSC_W_RZEDZIE];
+    for(int i = 0; i < ILOSC_W_RZEDZIE; i++)
+        ilosc[i] = 0;
 
 
     for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzSkosyLewe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, PC, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzSkosyLewe(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY; i++)
-        p.SprawdzSkosyPrawe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, PC, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzSkosyPrawe(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzPiony(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, PC, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzPiony(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzPoziomy(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, PC, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzPoziomy(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
 
-    wartosc += (ilosc1 * 1 + ilosc2 * 3 + ilosc3 * 10 + ilosc4 * 30 + ilosc5 * 100);
-
-    ilosc1 = 0, ilosc2 = 0, ilosc3 = 0, ilosc4 = 0, ilosc5 = 0;
+    int wartoscRzedu = 1;
+    for(int i = 0; i < ILOSC_W_RZEDZIE; i++) {
+        wartosc += ilosc[i] * wartoscRzedu;
+        wartoscRzedu *= 25;
+        ilosc[i] = 0;
+    }
     
     for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzSkosyLewe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzSkosyLewe(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY; i++)
-        p.SprawdzSkosyPrawe(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzSkosyPrawe(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzPiony(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzPiony(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
-        p.SprawdzPoziomy(ilosc1, ilosc2, ilosc3, ilosc4, ilosc5, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
+        p.SprawdzPoziomy(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
 
-    wartosc -= (ilosc1 * 1 + ilosc2 * 3 + ilosc3 * 10 + ilosc4 * 30 + ilosc5 * 100);
+    wartoscRzedu = 1;
+    for(int i = 0; i < ILOSC_W_RZEDZIE; i++) {
+        wartosc -= ilosc[i] * wartoscRzedu;
+        wartoscRzedu *= 30;
+        ilosc[i] = 0;
+    }
 
     return wartosc;
 }

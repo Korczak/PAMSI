@@ -120,6 +120,12 @@ public:
     bool IsPositionCorrect(int x, int y);
     
     /*
+    *Check if any of checker should change to queen
+    *If so, change it to queen
+    */
+    void ChangeToQueen();
+    
+    /*
     *Makes a move on board specified by move
     *!!! Move has to be correct !!!
     * 
