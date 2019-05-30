@@ -6,7 +6,7 @@
 
 #define PC 0
 #define GRACZ 1
-#define GLEBOKOSC 2
+#define GLEBOKOSC 3
 #define WIELKOSC_PLANSZY 8
 #define ILOSC_W_RZEDZIE 5
 
@@ -21,9 +21,9 @@ class Plansza
     public:
     int plansza[WIELKOSC_PLANSZY][WIELKOSC_PLANSZY];
 
-    Plansza(); //Creates an empty board
-    Plansza(const Plansza &p); //Creates copied board
-    Plansza& operator=(const Plansza &p); //Creates copied board
+    Plansza();
+    Plansza(const Plansza &p);
+    Plansza& operator=(const Plansza &p);
 
     void RysujPlansze();
 	 void ZrobRuch(int x, int y, int gracz);

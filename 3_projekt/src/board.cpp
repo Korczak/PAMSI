@@ -5,6 +5,7 @@ using namespace std;
 
 Board::Board()
 {
+    
     int temp[8][8]= 
         {
             {0,-1,0,-1,0,-1,0,-1},
@@ -16,6 +17,7 @@ Board::Board()
             {0,1,0,1,0,1,0,1},
             {1,0,1,0,1,0,1,0}
         };
+    
 
     for(int i=0; i<8; i++)
     {
@@ -54,8 +56,8 @@ Board& Board::operator=(const Board &b)
 void Board::PrintBoard()
 {
     int row_num[8]= {0,1,2,3,4,5,6,7};
-    char row_name[8] = {'K', 'O', 'L', 'U', 'M', 'N', 'Y', ' '};
-    cout<<endl<<"                      WIERSZE                         ";
+    char row_name[8] = {'W', 'I', 'E', 'R', 'S', 'Z', 'E', ' '};
+    cout<<endl<<"                     KOLUMNY                         ";
     cout<<endl<<"    0      1      2      3      4      5      6      7"<<endl;
     for(int i=0; i<8; i++)
     {
@@ -441,8 +443,10 @@ void Board::PlayerMove() {
         cin >> dx >> dy;
     } while(!IsMovePossible(x, y, dx, dy));
 
-    if(!IsEmpty(dx, dy))
+    if(!IsEmpty(dx, dy)) {
         JumpOverChecker(x, y, dx, dy);
+        isAttackingEnemy = true;
+    }
 
     *this = MakeMove(CreateMove(x, y, dx, dy)); //make move
     

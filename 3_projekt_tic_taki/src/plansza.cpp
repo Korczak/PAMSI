@@ -38,7 +38,7 @@ Plansza& Plansza::operator=(const Plansza &p)
 
 void Plansza::RysujPlansze()
 {
-    cout<<endl<<"                      WIERSZE                         ";
+    cout<<endl<<"         KOLUMNY                         ";
     cout<<endl<<"    ";
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
         cout << " " << i;
@@ -254,7 +254,6 @@ bool Plansza::CzyKoniec(int gracz) {
         SprawdzPiony(ilosc, i, gracz);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
         SprawdzPoziomy(ilosc, i, gracz);
-    
     if(ilosc[ILOSC_W_RZEDZIE - 1] > 0)
         return true;
     return false;
@@ -262,6 +261,9 @@ bool Plansza::CzyKoniec(int gracz) {
 }
 
 int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
+    int wartosciX[10] = {1, 5, 50, 500, 5000, 50000, 500000, 5000000};
+    int wartosciKolek[10] = {1, 6, 60, 600, 6000, 60000, 600000, 6000000};
+
     int wartosc = 0;
     int ilosc[ILOSC_W_RZEDZIE];
     for(int i = 0; i < ILOSC_W_RZEDZIE; i++)
@@ -279,10 +281,12 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
 
     int wartoscRzedu = 1;
     for(int i = 0; i < ILOSC_W_RZEDZIE; i++) {
-        wartosc += ilosc[i] * wartoscRzedu;
-        wartoscRzedu *= 25;
+        wartosc += ilosc[i] * wartosciX[i];
+        wartoscRzedu *= 5;
+        //cout << ilosc[i] << " ";
         ilosc[i] = 0;
     }
+    //cout << endl;
     
     for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
         p.SprawdzSkosyLewe(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
@@ -295,19 +299,25 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
 
     wartoscRzedu = 1;
     for(int i = 0; i < ILOSC_W_RZEDZIE; i++) {
-        wartosc -= ilosc[i] * wartoscRzedu;
-        wartoscRzedu *= 30;
+        wartosc -= ilosc[i] * wartosciKolek[i];
+        wartoscRzedu *= 5;
+        //cout << ilosc[i] << " ";
         ilosc[i] = 0;
     }
+    //cout << endl;
 
     return wartosc;
 }
 
 int obliczWartoscPlanszy(Plansza p) {
+    //p.RysujPlansze();
     int wartosc = 0;
+    //cout << "ZAM" << endl;
     wartosc += 1 * obliczWartoscPlanszy(p, false, false);
-    wartosc += 3 * obliczWartoscPlanszy(p, true, false);
-    wartosc += 10 * obliczWartoscPlanszy(p, true, true);
+    //cout << "1 otwa" << endl;
+    wartosc += 5 * obliczWartoscPlanszy(p, true, false);
+    //cout << "2 otwa" << endl;
+    wartosc += 25 * obliczWartoscPlanszy(p, true, true);
 
     return wartosc;
 }
@@ -316,7 +326,7 @@ int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
     if(glebokosc == 0)
         return obliczWartoscPlanszy(p);
 
-    int max = -999999, min = 999999;
+    int max = -9999999, min = 9999999;
 
     for(int x = 0; x < WIELKOSC_PLANSZY; x++) {
         for(int y = 0; y < WIELKOSC_PLANSZY; y++) {
@@ -330,29 +340,25 @@ int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
                 else
                     wynik = minMax(nowaPlansza, glebokosc - 1, PC, ruch);
 
-                /*
+                
                 if(glebokosc == GLEBOKOSC) {
                     nowaPlansza.RysujPlansze();
                     cout << wynik << endl;
                 }
-                */
+                
 
                 if(gracz == PC) {
                     if(max < wynik) {
                         max = wynik;
-                        if(glebokosc == GLEBOKOSC) {
-                            ruch.x = x;
-                            ruch.y = y;
-                        }
+                        ruch.x = x;
+                        ruch.y = y;
                     }
                 }
                 else {
                     if(min > wynik) {
                         min = wynik;
-                        if(glebokosc == GLEBOKOSC) {
-                            ruch.x = x;
-                            ruch.y = y;
-                        }
+                        ruch.x = x;
+                        ruch.y = y;
                     }
                 }
             }
@@ -361,9 +367,7 @@ int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
 
     if(gracz == PC)
         return max;
-    else
-        return min;
-    return 0;
+    return min;
 }
 
 void Plansza::RuchPC() {

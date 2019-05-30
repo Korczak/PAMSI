@@ -47,15 +47,6 @@ int Minmax::Min_Max(Board b, int depth, int maxDepth, int player, vector<Move>& 
 		else
 			score = Min_Max(boards[i], depth - 1, maxDepth, AI, result);
        	
-       	//cout << score << " for: " << endl;
-       	//for(auto move : moves[i]) {
-       	//	move.printMove();
-       	//}
-       	//cout << "Depth: " << depth << " " << score << ": ";
-       	//moves[i].back().printMove();
-
-       	//cout << depth << " " << result.size() << endl;
-       	//boards[i].PrintBoard();
     	if(player == AI) {
     		if(max < score) {
     			max = score;
