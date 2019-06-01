@@ -6,9 +6,9 @@
 
 #define PC 0
 #define GRACZ 1
-#define GLEBOKOSC 3
-#define WIELKOSC_PLANSZY 8
-#define ILOSC_W_RZEDZIE 5
+#define GLEBOKOSC 3 //glebokosc minimax, im wieksza tym PC trudniejsze
+#define WIELKOSC_PLANSZY 5
+#define ILOSC_W_RZEDZIE 3
 
 struct Punkt
 {
@@ -22,7 +22,6 @@ class Plansza
     int plansza[WIELKOSC_PLANSZY][WIELKOSC_PLANSZY];
 
     Plansza();
-    Plansza(const Plansza &p);
     Plansza& operator=(const Plansza &p);
 
     void RysujPlansze();

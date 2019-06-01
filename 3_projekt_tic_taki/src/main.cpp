@@ -10,10 +10,12 @@ int main() {
 		plansza.RuchGracza(GRACZ);
 		if(plansza.CzyKoniec())
 			break;
-		//plansza.RysujPlansze();
-		//plansza.RuchGracza(PC);
 		plansza.RuchPC();
 	}
 	plansza.RysujPlansze();
+	if(plansza.CzyKoniec(GRACZ))
+		cout << "GRACZ WYGRAL" << endl;
+	else
+		cout << "PC WYRAL" << endl;
 	return 0;
 }
