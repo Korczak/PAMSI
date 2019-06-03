@@ -271,9 +271,9 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
         ilosc[i] = 0;
 
     if(p.CzyKoniec(PC))
-        return -9999999; //sprawdz czy nie wygral jeden z graczy danej planszy
+        return 9999999; //sprawdz czy nie wygral jeden z graczy danej planszy
     if(p.CzyKoniec(GRACZ))
-        return 9999999;
+        return -9999999;
 
     //Sprawdzanie elementow w rzedzie dla PC
     for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
@@ -339,11 +339,13 @@ int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
                 else
                     wynik = minMax(nowaPlansza, glebokosc - 1, PC, ruch);
                 
+                /*
                 if(glebokosc == GLEBOKOSC) {
                     nowaPlansza.RysujPlansze();
                     cout << wynik << endl;
                 }
-
+                */
+                
                 if(gracz == PC) { //wybierz najlepszy ruch dla PC
                     if(max < wynik) {
                         max = wynik;
