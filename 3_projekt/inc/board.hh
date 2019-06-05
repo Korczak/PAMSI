@@ -105,6 +105,16 @@ public:
     */
     bool IsPlayerChecker(int x, int y);
 
+    /* 
+    * Check if black won
+    */
+    bool IsBlackWinner();
+
+    /* 
+    * Check if white won
+    */
+    bool IsWhiteWinner();
+
     /*
     *Check if is end of game
     *   

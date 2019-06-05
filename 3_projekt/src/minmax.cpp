@@ -21,8 +21,13 @@ int Minmax::CalculateScore(Board b) {
 	return score;
 }
 
+int Minmax::alfa_beta(Board b, int depth, int maxDepth, int player,
+				int alfa, int beta, std::vector<Move>& result) {
+	if(b.IsWhiteWinner())
+		return inf;
+	if(b.IsBlackWinner())
+		return -inf;
 
-int Minmax::Min_Max(Board b, int depth, int maxDepth, int player, vector<Move>& result) {
 	if(depth == 0)
 		return CalculateScore(b);
 
@@ -32,13 +37,8 @@ int Minmax::Min_Max(Board b, int depth, int maxDepth, int player, vector<Move>& 
 	vector<vector<Move>> moves;
 
     b.GetAllBoards(boards, moves);
-    //cout << boards.size() << endl;
-
-    int min = 99999;
-    int max = -99999;
 
 	for(vector<Board>::size_type i = 0; i != boards.size(); i++) {
-		//cout << boards[i].actualPlayer << " " << player << " " << depth << endl;
 		
 		boards[i].actualPlayer = player;
 		int score = 0;
@@ -48,23 +48,29 @@ int Minmax::Min_Max(Board b, int depth, int maxDepth, int player, vector<Move>& 
 			score = Min_Max(boards[i], depth - 1, maxDepth, AI, result);
        	
     	if(player == AI) {
-    		if(max < score) {
-    			max = score;
+    		if(alfa < score) {
+    			alfa = score;
     			if(depth == maxDepth)
     				result = moves[i];
+    			if(alfa >= beta)
+    				return alfa;
     		}
 
     	}
     	else {
-    		if(min > score) {
-    			min = score;
-    			if(depth == maxDepth)
-    				result = moves[i];
+    		if(beta > score) {
+    			beta = score;
+    			if(alfa >= beta)
+    				return beta;
     		}
     	}
     }
 
     if(player == PLAYER)
-    	return min;
-    return max;
+    	return beta;
+    return alfa;
+}
+
+int Minmax::Min_Max(Board b, int depth, int maxDepth, int player, vector<Move>& result) {
+	return alfa_beta(b, depth, maxDepth, player, -inf, inf, result);
 }

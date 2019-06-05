@@ -228,7 +228,7 @@ bool Board::IsMovePossible(int x, int y, int dx, int dy) {
     return false;
 }
 
-bool Board::IsEnd() {
+bool Board::IsBlackWinner() {
     int numWhite = 0;
     int numBlack = 0;
     for(int i = 0; i < 8; i++) {
@@ -240,9 +240,30 @@ bool Board::IsEnd() {
         }
     }
 
-    if(numWhite == 0 || numBlack == 0)
+    if(numWhite == 0)
         return true;
     return false;
+}
+
+bool Board::IsWhiteWinner() {
+    int numWhite = 0;
+    int numBlack = 0;
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            if(board[i][j] < 0)
+                numBlack++;
+            if(board[i][j] > 0)
+                numWhite++;
+        }
+    }
+
+    if(numBlack == 0)
+        return true;
+    return false;
+}
+
+bool Board::IsEnd() {
+    return IsWhiteWinner() || IsBlackWinner();
 }
 
 vector<Move> Board::GetAllMoves() {
