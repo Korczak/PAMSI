@@ -252,9 +252,9 @@ bool Plansza::CzyKoniec(int gracz) {
 
     for(int i = 0; i < ILOSC_W_RZEDZIE; i++)
         ilosc[i] = 0;
-    for(int i = -WIELKOSC_PLANSZY + 1; i < WIELKOSC_PLANSZY; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         SprawdzSkosyLewe(ilosc, i, gracz);
-    for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY - 1; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         SprawdzSkosyPrawe(ilosc, i, gracz);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
         SprawdzPiony(ilosc, i, gracz);
@@ -277,9 +277,9 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
 
 
     //Sprawdzanie elementow w rzedzie dla PC
-    for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         p.SprawdzSkosyLewe(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
-    for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         p.SprawdzSkosyPrawe(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
         p.SprawdzPiony(ilosc, i, PC, czyOtwarte, czyOtwarteZ2Stron);
@@ -292,9 +292,9 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
     }
 
     //Sprawdzanie elementow w rzedzie dla GRACZA    
-    for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         p.SprawdzSkosyLewe(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
-    for(int i = 0; i < WIELKOSC_PLANSZY + WIELKOSC_PLANSZY; i++)
+    for(int i = -WIELKOSC_PLANSZY * 2; i < WIELKOSC_PLANSZY * 2; i++)
         p.SprawdzSkosyPrawe(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
     for(int i = 0; i < WIELKOSC_PLANSZY; i++)
         p.SprawdzPiony(ilosc, i, GRACZ, czyOtwarte, czyOtwarteZ2Stron);
@@ -312,11 +312,9 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
 
 int obliczWartoscPlanszy(Plansza p) {
     int wartosc = 0;
-
     wartosc += 1 * obliczWartoscPlanszy(p, false, false); //wynik pomnoz przez 1 dla wszystkich elementow, nawet zamknietych z obu stron
     wartosc += 2 * obliczWartoscPlanszy(p, true, false); //wynik pomnoz przez 3 dla otwartych z jednej strony elementow
     wartosc += 3 * obliczWartoscPlanszy(p, true, true); //wynik pomnoz przez 10 dla otwartych z obu stron
-
     return wartosc;
 }
 
@@ -335,10 +333,11 @@ int max(int a, int b) { //zwraca wartosc maksymalna
 
 int alfaBeta(Plansza p, int glebokosc, int gracz, int alfa, int beta, Punkt& ruch) {
     if(p.CzyKoniec(PC)) 
-        return inf; //sprawdz czy nie wygral jeden z graczy danej planszy
+        return inf - 1; //sprawdz czy nie wygral jeden z graczy danej planszy
     if(p.CzyKoniec(GRACZ))
-        return -inf;
-
+        return -inf + 1;
+    
+    
     if(glebokosc == 0)
         return obliczWartoscPlanszy(p); //oblicz wartosc planszy
 
@@ -352,6 +351,7 @@ int alfaBeta(Plansza p, int glebokosc, int gracz, int alfa, int beta, Punkt& ruc
                 Plansza nowaPlansza;
                 nowaPlansza = p;
                 nowaPlansza.ZrobRuch(x, y, gracz); //zrob ruch dla planszy
+
 
                 wynik = 0;
                 if(gracz == PC) {
@@ -370,6 +370,9 @@ int alfaBeta(Plansza p, int glebokosc, int gracz, int alfa, int beta, Punkt& ruc
                     if(alfa>=beta) //odcinamy galaz, poniewaz nie ma sensu jej dalej sprawdzac
                         return beta;
                 }
+
+                   
+
             }
         }
     }

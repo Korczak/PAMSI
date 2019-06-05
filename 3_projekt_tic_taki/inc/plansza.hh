@@ -7,8 +7,8 @@
 #define PC 0
 #define GRACZ 1
 #define GLEBOKOSC 3 //glebokosc minimax, im wieksza tym PC trudniejsze
-#define WIELKOSC_PLANSZY 8
-#define ILOSC_W_RZEDZIE 5
+#define WIELKOSC_PLANSZY 5
+#define ILOSC_W_RZEDZIE 8
 #define inf 999999
 
 struct Punkt
