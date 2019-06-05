@@ -78,6 +78,8 @@ void Plansza::ZrobRuch(int x, int y, int gracz) {
         plansza[x][y] = 1; //zaznacz O na planszy
     else 
         plansza[x][y] = -1; //zaznacz X na planszy
+
+    iloscWykonanychRuchow++;
 }
 
 bool Plansza::CzyPoprawnePole(int x, int y) {
@@ -230,13 +232,16 @@ void Plansza::SprawdzSkosyLewe(int ilosc[], int skos,
         DodajIlosc(iloscElem, ilosc);
 }
 
+
 bool Plansza::CzyKoniec() {
-    bool czyKoniec = false;
-    czyKoniec = CzyKoniec(GRACZ); //czy Gracz wygral
-    if(czyKoniec)
+
+    if(iloscWykonanychRuchow >= WIELKOSC_PLANSZY * WIELKOSC_PLANSZY)
         return true;
-    czyKoniec = CzyKoniec(PC); //czy PC wygral
-    if(czyKoniec)
+
+    if(CzyKoniec(GRACZ)) //czy Gracz wygral
+        return true;
+
+    if(CzyKoniec(PC)) //czy PC wygral
         return true;
 
     return false;
@@ -270,10 +275,6 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
     for(int i = 0; i < ILOSC_W_RZEDZIE; i++)
         ilosc[i] = 0;
 
-    if(p.CzyKoniec(PC))
-        return 9999999; //sprawdz czy nie wygral jeden z graczy danej planszy
-    if(p.CzyKoniec(GRACZ))
-        return -9999999;
 
     //Sprawdzanie elementow w rzedzie dla PC
     for(int i = -WIELKOSC_PLANSZY; i < WIELKOSC_PLANSZY; i++)
@@ -311,6 +312,7 @@ int obliczWartoscPlanszy(Plansza p, bool czyOtwarte, bool czyOtwarteZ2Stron) {
 
 int obliczWartoscPlanszy(Plansza p) {
     int wartosc = 0;
+
     wartosc += 1 * obliczWartoscPlanszy(p, false, false); //wynik pomnoz przez 1 dla wszystkich elementow, nawet zamknietych z obu stron
     wartosc += 2 * obliczWartoscPlanszy(p, true, false); //wynik pomnoz przez 3 dla otwartych z jednej strony elementow
     wartosc += 3 * obliczWartoscPlanszy(p, true, true); //wynik pomnoz przez 10 dla otwartych z obu stron
@@ -318,11 +320,28 @@ int obliczWartoscPlanszy(Plansza p) {
     return wartosc;
 }
 
-int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
+int min(int a, int b) { //zwraca wartosc minimalna
+    if(a > b)
+        return b;
+    return a;
+}
+
+
+int max(int a, int b) { //zwraca wartosc maksymalna
+    if(a > b)
+        return a;
+    return b;
+}
+
+int alfaBeta(Plansza p, int glebokosc, int gracz, int alfa, int beta, Punkt& ruch) {
+    if(p.CzyKoniec(PC)) 
+        return inf; //sprawdz czy nie wygral jeden z graczy danej planszy
+    if(p.CzyKoniec(GRACZ))
+        return -inf;
+
     if(glebokosc == 0)
         return obliczWartoscPlanszy(p); //oblicz wartosc planszy
 
-    int max = -9999999, min = 9999999;
     int iloscNowychRuchow = 0;
     int wynik;
 
@@ -333,58 +352,45 @@ int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
                 Plansza nowaPlansza;
                 nowaPlansza = p;
                 nowaPlansza.ZrobRuch(x, y, gracz); //zrob ruch dla planszy
+
                 wynik = 0;
-                if(gracz == PC)
-                    wynik = minMax(nowaPlansza, glebokosc - 1, GRACZ, ruch); //wylicz minMax dla planszy
-                else
-                    wynik = minMax(nowaPlansza, glebokosc - 1, PC, ruch);
-                
-                /*
-                if(glebokosc == GLEBOKOSC) {
-                    nowaPlansza.RysujPlansze();
-                    cout << wynik << endl;
-                }
-                */
-                
-                if(gracz == PC) { //wybierz najlepszy ruch dla PC
-                    if(max < wynik) {
-                        max = wynik;
-                        if(GLEBOKOSC == glebokosc) { //zapisz tylko ruchy dla pierwszego ruchu od obecnej planszy
-                            ruch.x = x;
-                            ruch.y = y;
-                        }
+                if(gracz == PC) {
+                    wynik = alfaBeta(nowaPlansza, glebokosc - 1, GRACZ, alfa, beta, ruch);
+                    if(GLEBOKOSC == glebokosc && wynik > alfa) { //zapisz tylko ruchy dla pierwszego ruchu od obecnej planszy
+                        ruch.x = x;
+                        ruch.y = y;
                     }
+                    alfa = max(alfa, wynik); //wylicz alfaBeta dla planszy
+                    if(alfa>=beta) //odcinamy galaz, poniewaz nie ma sensu jej dalej sprawdzac
+                        return alfa;
                 }
                 else {
-                    if(min > wynik) { //wybierz najlepszy ruch dla GRACZA
-                        min = wynik;
-                        if(GLEBOKOSC == glebokosc) { //zapisz tylko ruchy dla pierwszego ruchu od obecnej planszy
-                            ruch.x = x;
-                            ruch.y = y;
-                        }
-                    }
+                    wynik = alfaBeta(nowaPlansza, glebokosc - 1, PC, alfa, beta, ruch);
+                    beta = min(beta, wynik);
+                    if(alfa>=beta) //odcinamy galaz, poniewaz nie ma sensu jej dalej sprawdzac
+                        return beta;
                 }
             }
         }
     }
-    if(iloscNowychRuchow == 0) { //jezeli nie ma mozliwych nowych ruchow dla obecnej planszy
-        wynik = minMax(p, 0, gracz, ruch);
 
-        if(gracz == PC) {
-            if(max < wynik) {
-                max = wynik;
-            }
-        }
-        else {
-            if(min > wynik) {
-                min = wynik;
-            }
-        }
+    if(iloscNowychRuchow == 0) { //jezeli nie ma mozliwych nowych ruchow dla obecnej planszy
+        wynik = alfaBeta(p, 0, gracz, alfa, beta, ruch);
+
+        if(gracz == PC)
+            alfa = max(alfa, wynik); //wylicz alfaBeta dla planszy
+        else
+            beta = min(beta, wynik);
     }
 
     if(gracz == PC)
-        return max;
-    return min;
+        return alfa;
+    return beta;
+}
+
+
+int minMax(Plansza p, int glebokosc, int gracz, Punkt& ruch) {
+    return alfaBeta(p, glebokosc, gracz, -inf, inf, ruch);
 }
 
 void Plansza::RuchPC() {
